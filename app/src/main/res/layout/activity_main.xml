@@ -10,10 +10,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="gomes.com.gomesstudioreservation.MainActivity">
 
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/sp_list_studio">
-
-    </Spinner>
 </RelativeLayout>
