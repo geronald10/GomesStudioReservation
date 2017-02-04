@@ -21,4 +21,24 @@
     <string name="select_date_label">Select Date</string>
     <string name="search_button_label">Search</string>
     <string name="band_name_example">Mocca Band</string>
+    <string name="manage_booking_label">Manage Booking</string>
+    <string name="booking_label">Booking</string>
+    <string name="book_button_label">Book</string>
+    <string name="studio_name_label">Studio</string>
+    <string name="date_label">Date</string>
+    <string name="hour_label">Hour</string>
+    <string name="room_label">Room</string>
+    <string name="total_payment_label">Total Payment</string>
+    <string name="continue_to_payment_button_label">Continue to payment</string>
+    <string name="booking_review_label">Booking Review</string>
+    <string name="bgHeaderbookingreview">headerBookingReview</string>
+    <string name="bank_account_number_label">Bank Account Number</string>
+    <string name="payment_label">Payment</string>
+    <string name="under_the_name_label">Under The Name</string>
+    <string name="keterangan_payment1">harap ditransfer sebelum pukul</string>
+    <string name="limit_time_default_value">HH:MM</string>
+    <string name="confirm_payment_label">Confirm Payment</string>
+    <string name="keterangan_payment2">untuk mengkonfirmasi pembayaran harap menghubungi nomor berikut:</string>
+    <string name="booking_history_label">Booking History</string>
+    <string name="selected_date">Selected Date</string>
 </resources>

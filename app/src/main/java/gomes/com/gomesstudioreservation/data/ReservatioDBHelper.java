@@ -34,9 +34,7 @@ public class ReservatioDBHelper extends SQLiteOpenHelper {
                 StudioEntry.COLUMN_STUDIO_NAMA + " TEXT NOT NULL, " +
                 StudioEntry.COLUMN_STUDIO_ALAMAT + " TEXT NOT NULL, " +
                 StudioEntry.COLUMN_STUDIO_HARGA + " TEXT NOT NULL, " +
-                StudioEntry.COLUMN_STUDIO_TELEPON + " TEXT NOT NULL, " +
-                StudioEntry.COLUMN_STUDIO_OPEN_HOUR + " INTEGER NOT NULL, " +
-                StudioEntry.COLUMN_STUDIO_CLOSE_HOUR + " INTEGER NOT NULL " +
+                StudioEntry.COLUMN_STUDIO_TELEPON + " TEXT NOT NULL " +
                 " ON CONFLICT REPLACE);";
         sqLiteDatabase.execSQL(SQL_CREATE_STUDIO_TABLE);
     }

@@ -23,8 +23,8 @@ public class StudioJsonUtils {
     private static final String STUDIO_ALAMAT = "alamat_studio";
     private static final String STUDIO_HARGA = "harga_studio";
     private static final String STUDIO_TELEPON = "telepon_studio";
-    private static final String STUDIO_OPEN_HOUR = "studio_open";
-    private static final String STUDIO_CLOSE_HOUR = "stuio_close";
+//    private static final String STUDIO_OPEN_HOUR = "studio_open";
+//    private static final String STUDIO_CLOSE_HOUR = "stuio_close";
     private static final String STUDIO_MESSAGE_CODE = "cod";
 
     public static ContentValues[] getStudioContentValuesFromJson(Context context, String studioJsonStr)
@@ -53,8 +53,8 @@ public class StudioJsonUtils {
             String alamatStudio;
             int hargaStudio;
             String teleponStudio;
-            String openHour;
-            String closeHour;
+//            String openHour;
+//            String closeHour;
             int idStudio;
 
             JSONObject studio = jsonStudioArray.getJSONObject(i);
@@ -63,8 +63,8 @@ public class StudioJsonUtils {
             alamatStudio = studio.getString(STUDIO_ALAMAT);
             hargaStudio = studio.getInt(STUDIO_HARGA);
             teleponStudio = studio.getString(STUDIO_TELEPON);
-            openHour = studio.getString(STUDIO_OPEN_HOUR);
-            closeHour = studio.getString(STUDIO_CLOSE_HOUR);
+//            openHour = studio.getString(STUDIO_OPEN_HOUR);
+//            closeHour = studio.getString(STUDIO_CLOSE_HOUR);
 
             ContentValues studioValues = new ContentValues();
             studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_ID, idStudio);
@@ -72,8 +72,8 @@ public class StudioJsonUtils {
             studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_ALAMAT, alamatStudio);
             studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_HARGA, hargaStudio);
             studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_TELEPON, teleponStudio);
-            studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_OPEN_HOUR, openHour);
-            studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_CLOSE_HOUR, closeHour);
+//            studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_OPEN_HOUR, openHour);
+//            studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_CLOSE_HOUR, closeHour);
 
             studioContentValues[i] = studioValues;
         }
