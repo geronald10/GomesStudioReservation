@@ -41,4 +41,16 @@
     <string name="keterangan_payment2">untuk mengkonfirmasi pembayaran harap menghubungi nomor berikut:</string>
     <string name="booking_history_label">Booking History</string>
     <string name="selected_date">Selected Date</string>
+    <string name="select_date_button_label">Select Date</string>
+    <string name="no_selection_label">No Selection</string>
+    <string name="your_band_name_hint">Your band name</string>
+    <string name="content_authority">gomes.com.gomesstudioreservation</string>
+    <string name="action_register">Sign Up</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_phone_number">No. Telepon</string>
+    <string name="prompt_user_password">Password</string>
+    <string name="prompt_confrim_password">Confrim Password</string>
+    <string name="btn_link_to_register">Not a member? Sign up now.</string>
+    <string name="action_sign_in_btn">Sign In</string>
+    <string name="btn_link_to_login">Already registered! Login Me.</string>
 </resources>
