@@ -20,7 +20,9 @@ public class ReservationContract {
         public static final String TABLE_NAME = "user";
         public static final String KEY_USER_NAME = "user_name";
         public static final String KEY_USER_EMAIL = "user_email";
+        public static final String KEY_USER_ID = "user_id";
         public static final String KEY_TIPE_USER = "tipe_user";
+        public static final String KEY_TIPE_USER_ID = "tipe_user_id";
         public static final String KEY_USER_NO_HP = "user_hp";
         public static final String KEY_USER_PASSWORD = "user_password";
     }
@@ -46,7 +48,6 @@ public class ReservationContract {
                 .build();
 
         public static final String TABLE_NAME = "city";
-
         public static final String COLUMN_CITY_ID = "city_id";
         public static final String COLUMN_CITY_NAMA = "city_nama";
     }

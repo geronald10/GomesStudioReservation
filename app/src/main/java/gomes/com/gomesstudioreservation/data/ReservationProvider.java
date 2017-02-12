@@ -7,15 +7,18 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 public class ReservationProvider extends ContentProvider {
 
     public static final int CODE_CITY = 100;
-    public static final int CODE_CITY_WITH_ID = 101;
+    public static final int CODE_CITY_WITH_ID = 110;
     public static final int CODE_STUDIO = 200;
     public static final int CODE_USER = 300;
+    public static final int CODE_USER_WITH_ID = 310;
 
     private static final UriMatcher cUriMatcher = buildUriMatcher();
     private ReservationDBHelper mOpenHelper;
@@ -27,7 +30,7 @@ public class ReservationProvider extends ContentProvider {
         matcher.addURI(authority, ReservationContract.PATH_CITY, CODE_CITY);
         matcher.addURI(authority, ReservationContract.PATH_CITY + "/#", CODE_CITY_WITH_ID);
         matcher.addURI(authority, ReservationContract.PATH_USER, CODE_USER);
-
+        matcher.addURI(authority, ReservationContract.PATH_USER + "/#", CODE_USER_WITH_ID);
 
         return matcher;
     }
@@ -72,36 +75,41 @@ public class ReservationProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-        Cursor cursor;
+
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
         switch (cUriMatcher.match(uri)) {
             case CODE_CITY: {
-                cursor = mOpenHelper.getReadableDatabase().query(
-                        ReservationContract.CityEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
+                queryBuilder.setTables(ReservationContract.CityEntry.TABLE_NAME);
                 break;
             }
+
             case CODE_USER: {
-                cursor = mOpenHelper.getReadableDatabase().query(
-                        ReservationContract.UserEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
+                queryBuilder.setTables(ReservationContract.UserEntry.TABLE_NAME);
+                break;
+            }
+
+            case CODE_USER_WITH_ID: {
+                queryBuilder.setTables(ReservationContract.UserEntry.TABLE_NAME);
+                queryBuilder.appendWhere(ReservationContract.UserEntry._ID + "="
+                        + uri.getLastPathSegment());
                 break;
             }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
+
+        Cursor cursor = queryBuilder.query(
+                mOpenHelper.getReadableDatabase(),
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
+        Log.d("From Provider", "query total " + cursor.getCount());
         return cursor;
     }
 
@@ -120,9 +128,15 @@ public class ReservationProvider extends ContentProvider {
             case CODE_USER: {
                 db.beginTransaction();
                 try {
-                    long id = db.insert(ReservationContract.UserEntry.TABLE_NAME, null, contentValues);
+                    long id = db.insert(
+                            ReservationContract.UserEntry.TABLE_NAME,
+                            null,
+                            contentValues);
                     if (id > 0) {
-                        return ContentUris.withAppendedId(uri, id);
+                        Uri returnUri = ContentUris.withAppendedId(ReservationContract.UserEntry.CONTENT_URI, id);
+                        getContext().getContentResolver().notifyChange(returnUri, null);
+                        Log.d("From Provider", "insert user berhasil");
+                        return returnUri;
                     }
                     db.setTransactionSuccessful();
                 }finally {

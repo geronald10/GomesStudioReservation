@@ -13,7 +13,7 @@ import static gomes.com.gomesstudioreservation.data.ReservationContract.UserEntr
 public class ReservationDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "reservation.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 4;
 
     public ReservationDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,9 +65,7 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
                 KEY_USER_NAME + " TEXT NOT NULL, " +
                 UserEntry.KEY_USER_EMAIL + " TEXT NOT NULL, " +
                 UserEntry.KEY_TIPE_USER + " INTEGER NOT NULL, " +
-                UserEntry.KEY_USER_NO_HP + " TEXT NOT NULL, " +
-                UserEntry.KEY_USER_PASSWORD + " TEXT NOT NULL, UNIQUE (" +
-                KEY_USER_NAME + ", " +
+                UserEntry.KEY_USER_NO_HP + " TEXT NOT NULL, UNIQUE (" +
                 UserEntry.KEY_USER_EMAIL + ") ON CONFLICT REPLACE);";
         sqLiteDatabase.execSQL(SQL_CREATE_USER_TABLE);
     }

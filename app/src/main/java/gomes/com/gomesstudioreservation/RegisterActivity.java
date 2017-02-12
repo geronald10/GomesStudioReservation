@@ -1,9 +1,7 @@
 package gomes.com.gomesstudioreservation;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -27,7 +25,6 @@ import java.util.Map;
 
 import gomes.com.gomesstudioreservation.data.ReservationContract;
 import gomes.com.gomesstudioreservation.data.ReservationSessionManager;
-import gomes.com.gomesstudioreservation.utilities.AppController;
 import gomes.com.gomesstudioreservation.utilities.NetworkUtils;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -49,11 +46,11 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        edtUsername = (EditText)findViewById(R.id.edt_username);
-        edtUserEmail = (EditText)findViewById(R.id.edt_user_email);
-        edtUserPhone = (EditText)findViewById(R.id.edt_user_phone_number);
-        edtUserPassword = (EditText)findViewById(R.id.edt_password);
-        edtUserConfirmPassword = (EditText)findViewById(R.id.edt_confirm_password);
+        edtUsername = (EditText) findViewById(R.id.edt_username);
+        edtUserEmail = (EditText) findViewById(R.id.edt_user_email);
+        edtUserPhone = (EditText) findViewById(R.id.edt_user_phone_number);
+        edtUserPassword = (EditText) findViewById(R.id.edt_password);
+        edtUserConfirmPassword = (EditText) findViewById(R.id.edt_confirm_password);
 
         btnRegister = (Button) findViewById(R.id.register_button);
         btnLinkToLogin = (Button) findViewById(R.id.btnLinkToLoginScreen);
@@ -113,99 +110,74 @@ public class RegisterActivity extends AppCompatActivity {
     /**
      * Function to store user in MySQL database will post params(name,
      * email, noHp, password) to register url
-     * */
+     */
     private void registerUser(final String name, final String email, final String tipeUser, final String noHp, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_register";
+        StringRequest strReq;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         pDialog.setMessage("Sign up ...");
         showDialog();
 
-        try {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            String URL = NetworkUtils.REGISTER_CHAMBER_URL;
-            JSONObject jsonBody = new JSONObject();
-            jsonBody.put(ReservationContract.UserEntry.KEY_USER_NAME, name);
-            jsonBody.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
-            jsonBody.put(ReservationContract.UserEntry.KEY_TIPE_USER, tipeUser);
-            jsonBody.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHp);
-            jsonBody.put(ReservationContract.UserEntry.KEY_USER_PASSWORD, password);
+        strReq = new StringRequest(Request.Method.POST,
+                NetworkUtils.REGISTER_CHAMBER_URL, new Response.Listener<String>() {
 
-            final String requestBody = jsonBody.toString();
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Register Response: " + response);
+                hideDialog();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String status = jsonObject.getString("status");
+                    String code = jsonObject.getString("code");
+                    if (code.equals("1")) {
+                        // User successfully stored in server.
+                        Toast.makeText(getApplicationContext(), status, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "masuk sini");
 
-            StringRequest strReq = new StringRequest(Request.Method.POST,
-                    NetworkUtils.REGISTER_CHAMBER_URL, new Response.Listener<String>() {
-
-                @Override
-                public void onResponse(String response) {
-                    Log.d(TAG, "Register Response: " + response);
-                    hideDialog();
-
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        boolean error = jsonObject.getBoolean("error");
-                        if (!error) {
-                            // User successfully stored in MySQL
-                            // Now store the user in sqlite
-                            JSONObject user = jsonObject.getJSONObject("user");
-                            String name = user.getString(ReservationContract.UserEntry.KEY_USER_NAME);
-                            String email = user.getString(ReservationContract.UserEntry.KEY_USER_EMAIL);
-                            String tipeUser = user.getString(ReservationContract.UserEntry.KEY_TIPE_USER);
-                            String noHp = user.getString(ReservationContract.UserEntry.KEY_USER_NO_HP);
-
-                            // Inserting row in users table
-                            addUser(name, email, tipeUser, noHp);
-
-                            Toast.makeText(getApplicationContext(), "User successfully registered. Try login now!", Toast.LENGTH_LONG).show();
-
-                            // Launch login activity
-                            Intent intent = new Intent(
-                                    RegisterActivity.this,
-                                    LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-
-                            // Error occurred in registration. Get the error
-                            // message
-                            String errorMsg = jsonObject.getString("error_msg");
-                            Toast.makeText(getApplicationContext(),
-                                    errorMsg, Toast.LENGTH_LONG).show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        // Launch login activity
+                        Intent intent = new Intent(
+                                RegisterActivity.this,
+                                LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // Error occurred in registration. Get the error message
+                        Toast.makeText(getApplicationContext(),
+                                status, Toast.LENGTH_LONG).show();
                     }
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
+            }
+        }, new Response.ErrorListener() {
 
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e(TAG, "Registration Error: " + error.getMessage());
-                    Toast.makeText(getApplicationContext(),
-                            error.getMessage(), Toast.LENGTH_LONG).show();
-                    hideDialog();
-                }
-            }) {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Registration Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
 
-                @Override
-                protected Map<String, String> getParams() {
-                    // Posting params to register url
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put(ReservationContract.UserEntry.KEY_USER_NAME, name);
-                    params.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
-                    params.put(ReservationContract.UserEntry.KEY_TIPE_USER, tipeUser);
-                    params.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHp);
-
-                    return params;
-                }
-            };
-            // Adding request to requestqueue
-            Log.d("stringReques:", String.valueOf(strReq));
-            AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting params to register url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put(ReservationContract.UserEntry.KEY_USER_NAME, name);
+                params.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
+                params.put(ReservationContract.UserEntry.KEY_TIPE_USER, tipeUser);
+                params.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHp);
+                params.put(ReservationContract.UserEntry.KEY_USER_PASSWORD, password);
+                return params;
+            }
+        };
+        // Adding request to requestqueue
+        strReq.setTag(tag_string_req);
+        requestQueue.add(strReq);
+        Log.d("stringRequest:", String.valueOf(strReq));
     }
 
     private void showDialog() {
@@ -216,17 +188,5 @@ public class RegisterActivity extends AppCompatActivity {
     private void hideDialog() {
         if (pDialog.isShowing())
             pDialog.dismiss();
-    }
-
-    public void addUser(String username, String email, String tipeUser, String noHP) {
-        Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
-        ContentValues values = new ContentValues();
-
-        values.put(ReservationContract.UserEntry.KEY_USER_NAME, username);
-        values.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
-        values.put(ReservationContract.UserEntry.KEY_TIPE_USER, tipeUser);
-        values.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHP);
-
-        getApplicationContext().getContentResolver().insert(mNewUri, values);
     }
 }

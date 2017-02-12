@@ -13,9 +13,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,6 @@ import java.util.Map;
 
 import gomes.com.gomesstudioreservation.data.ReservationContract;
 import gomes.com.gomesstudioreservation.data.ReservationSessionManager;
-import gomes.com.gomesstudioreservation.utilities.AppController;
 import gomes.com.gomesstudioreservation.utilities.NetworkUtils;
 
 public class LoginActivity extends AppCompatActivity {
@@ -96,36 +97,36 @@ public class LoginActivity extends AppCompatActivity {
     private void checkLogin(final String email, final String password) {
         // Tag used to cancel the request
         String tag_string_req = "req_login";
+        StringRequest strReq;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
 
         pDialog.setMessage("Sign in ...");
         showDialog();
 
-        StringRequest strReq = new StringRequest(Request.Method.POST,
+        strReq = new StringRequest(Request.Method.POST,
                 NetworkUtils.LOGIN_CHAMBER_URL, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
                 Log.d(TAG, "Login Response: " + response);
                 hideDialog();
-
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    boolean error = jsonObject.getBoolean("error");
-
+                    String status = jsonObject.getString("status");
+                    String code = jsonObject.getString("code");
                     // Check for error node in json
-                    if (!error) {
+                    if (code.equals("1")) {
                         // user successfully logged in. Create Login session
                         session.setLogin(true);
 
                         JSONObject user = jsonObject.getJSONObject("user");
                         String name = user.getString(ReservationContract.UserEntry.KEY_USER_NAME);
                         String email = user.getString(ReservationContract.UserEntry.KEY_USER_EMAIL);
-                        String tipeUser = user.getString(ReservationContract.UserEntry.KEY_TIPE_USER);
+                        String tipeUser = user.getString(ReservationContract.UserEntry.KEY_TIPE_USER_ID);
                         String noHp = user.getString(ReservationContract.UserEntry.KEY_USER_NO_HP);
-                        String password = user.getString(ReservationContract.UserEntry.KEY_USER_PASSWORD);
 
                         // Inserting row in users table
-                        addUser(name, email, tipeUser, noHp, password);
+                        addUser(name, email, tipeUser, noHp);
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -134,9 +135,8 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     } else {
                         // Error in login. Get the error message
-                        String errorMsg = jsonObject.getString("error_msg");
                         Toast.makeText(getApplicationContext(),
-                                errorMsg, Toast.LENGTH_LONG).show();
+                                status, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -166,9 +166,9 @@ public class LoginActivity extends AppCompatActivity {
                 return params;
             }
         };
-
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+        strReq.setTag(tag_string_req);
+        requestQueue.add(strReq);
     }
 
     private void showDialog() {
@@ -181,7 +181,7 @@ public class LoginActivity extends AppCompatActivity {
             pDialog.dismiss();
     }
 
-    public void addUser(String username, String email, String tipeUser, String noHP, String password) {
+    public void addUser(String username, String email, String tipeUser, String noHP) {
         Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
         ContentValues values = new ContentValues();
 
@@ -189,8 +189,8 @@ public class LoginActivity extends AppCompatActivity {
         values.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
         values.put(ReservationContract.UserEntry.KEY_TIPE_USER, tipeUser);
         values.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHP);
-        values.put(ReservationContract.UserEntry.KEY_USER_PASSWORD, password);
 
+        Log.d("Insertion from login", values.toString());
         getApplicationContext().getContentResolver().insert(mNewUri, values);
     }
 }
