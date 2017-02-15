@@ -40,6 +40,7 @@ public class ReservationContract {
         public static final String COLUMN_STUDIO_TELEPON = "studio_telepon";
         public static final String COLUMN_STUDIO_OPEN = "studio_open_hour";
         public static final String COLUMN_STUDIO_CLOSE = "studio_close_hour";
+        public static final String COLUMN_STUDIO_FK_CITY_ID = "city_id";
     }
 
     public static final class CityEntry implements BaseColumns {

@@ -11,7 +11,7 @@ import gomes.com.gomesstudioreservation.data.ReservationContract.UserEntry;
 public class ReservationDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "reservation.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     // nanti dihapus
 
@@ -29,9 +29,9 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + UserEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + StudioEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXIST " + CityEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + UserEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + StudioEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CityEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
@@ -44,8 +44,10 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
                 StudioEntry.COLUMN_STUDIO_ALAMAT + " TEXT NOT NULL, " +
                 StudioEntry.COLUMN_STUDIO_TELEPON + " TEXT NOT NULL, " +
                 StudioEntry.COLUMN_STUDIO_OPEN + " TEXT NOT NULL, " +
+                StudioEntry.COLUMN_STUDIO_FK_CITY_ID + " TEXT NOT NULL, " +
                 StudioEntry.COLUMN_STUDIO_CLOSE + " TEXT NOT NULL, UNIQUE (" +
-                StudioEntry.COLUMN_STUDIO_ID + ") ON CONFLICT REPLACE);";
+                StudioEntry.COLUMN_STUDIO_ID + ") ON CONFLICT REPLACE FOREIGN KEY (" + StudioEntry.COLUMN_STUDIO_FK_CITY_ID +
+                        ") REFERENCES " + CityEntry.TABLE_NAME + "(" + CityEntry.COLUMN_CITY_ID + "));";
         sqLiteDatabase.execSQL(SQL_CREATE_STUDIO_TABLE);
     }
 

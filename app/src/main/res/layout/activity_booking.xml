@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    app:theme="@style/AppTheme.NoActionBar"
+    android:theme="@style/AppTheme.NoActionBar"
     tools:context=".BookingActivity"
     tools:showIn="@layout/app_bar_main">
 
@@ -16,6 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/sync_data_city_studio"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:layout_editor_absoluteY="567dp"
+            tools:layout_editor_absoluteX="0dp" />
 
         <ImageView
             android:id="@+id/iv_ruang_studio"
@@ -110,6 +119,7 @@
             android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="16sp"
+            app:hintText="Select town"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="@+id/tv_select_town"
             app:layout_constraintRight_toRightOf="parent"
@@ -140,6 +150,7 @@
             android:layout_marginTop="8dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textSize="16sp"
+            app:hintText="Specify town first"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="@+id/tv_select_studio"
             app:layout_constraintRight_toRightOf="parent"
