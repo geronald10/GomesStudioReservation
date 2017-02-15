@@ -38,7 +38,8 @@ public class ReservationContract {
         public static final String COLUMN_STUDIO_NAMA = "studio_nama";
         public static final String COLUMN_STUDIO_ALAMAT = "studio_alamat";
         public static final String COLUMN_STUDIO_TELEPON = "studio_telepon";
-        public static final String COLUMN_STUDIO_HARGA = "studio_harga";
+        public static final String COLUMN_STUDIO_OPEN = "studio_open_hour";
+        public static final String COLUMN_STUDIO_CLOSE = "studio_close_hour";
     }
 
     public static final class CityEntry implements BaseColumns {
@@ -49,6 +50,6 @@ public class ReservationContract {
 
         public static final String TABLE_NAME = "city";
         public static final String COLUMN_CITY_ID = "city_id";
-        public static final String COLUMN_CITY_NAMA = "city_nama";
+        public static final String COLUMN_CITY_NAMA = "city_name";
     }
 }

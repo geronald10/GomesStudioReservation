@@ -22,7 +22,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import gomes.com.gomesstudioreservation.data.ReservationContract;
@@ -122,17 +124,17 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject user = jsonObject.getJSONObject("user");
                         String name = user.getString(ReservationContract.UserEntry.KEY_USER_NAME);
                         String email = user.getString(ReservationContract.UserEntry.KEY_USER_EMAIL);
-                        String tipeUser = user.getString(ReservationContract.UserEntry.KEY_TIPE_USER_ID);
                         String noHp = user.getString(ReservationContract.UserEntry.KEY_USER_NO_HP);
 
                         // Inserting row in users table
-                        addUser(name, email, tipeUser, noHp);
+                        addUser(name, email, noHp);
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
                                 BookingActivity.class);
                         startActivity(intent);
                         finish();
+
                     } else {
                         // Error in login. Get the error message
                         Toast.makeText(getApplicationContext(),
@@ -181,17 +183,39 @@ public class LoginActivity extends AppCompatActivity {
             pDialog.dismiss();
     }
 
-    public void addUser(String username, String email, String tipeUser, String noHP) {
+    public void addUser(String username, String email, String noHP) {
+        //        ReservationDBHelper db = new ReservationDBHelper(BookingActivity.this);
         Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
-        ContentValues values = new ContentValues();
-
+        final ContentValues values = new ContentValues();
+//
+//        AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContentResolver()) {
+//        };
         values.put(ReservationContract.UserEntry.KEY_USER_NAME, username);
         values.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
-        values.put(ReservationContract.UserEntry.KEY_TIPE_USER, tipeUser);
         values.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHP);
+//
+//        queryHandler.startInsert(-1, null, mNewUri, values);
+//        Log.d("Insertion from login ", values.toString());
 
-        Log.d("Insertion from login", values.toString());
-        getApplicationContext().getContentResolver().insert(mNewUri, values);
+        List<ContentValues> fakeValues = new ArrayList<ContentValues>();
+        fakeValues.add(values);
+
+        this.getContentResolver().bulkInsert(
+                mNewUri,
+                fakeValues.toArray(new ContentValues[1]));
+        Log.d("jumlah data dikirim", String.valueOf(fakeValues.size()));
+
+//        Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
+//        final ContentValues values = new ContentValues();
+//
+//        AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContentResolver()) {
+//        };
+//        values.put(ReservationContract.UserEntry.KEY_USER_NAME, username);
+//        values.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
+//        values.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHP);
+//
+//        queryHandler.startInsert(-1, null, mNewUri, values);
+//        Log.d("Insertion from login ", values.toString());
     }
 }
 

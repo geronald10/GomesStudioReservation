@@ -16,19 +16,19 @@ import java.util.Scanner;
 public final class NetworkUtils {
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
-    private static final int tipeUser = 1; // tipe pelanggan
-
     // Registration API
     public static final String REGISTER_CHAMBER_URL =
             "http://128.199.139.178/reservasistudio/public/index.php/u/register";
     // Login API
     public static final String LOGIN_CHAMBER_URL =
             "http://128.199.139.178/reservasistudio/public/index.php/u/login";
+    // List Kota + Studio API
+    public static final String KOTA_STUDIO_CHAMBER_URL =
+            "http://128.199.139.178/reservasistudio/public/index.php/j/kotastudio";
 
     // format query parameter to API
     private static final String USERNAME_PARAM = "user_name";
     private static final String USER_EMAIL_PARAM = "user_email";
-    private static final String TIPE_USER_PARAM = "tipe_user";
     private static final String USER_HP_PARAM = "user_hp";
     private static final String USER_PASSWORD_PARAM = "user_password";
 
@@ -37,7 +37,6 @@ public final class NetworkUtils {
         Uri reservationQueryUri = Uri.parse(REGISTER_CHAMBER_URL).buildUpon()
                 .appendQueryParameter(USERNAME_PARAM, username)
                 .appendQueryParameter(USER_EMAIL_PARAM, email)
-                .appendQueryParameter(TIPE_USER_PARAM, Integer.toString(tipeUser))
                 .appendQueryParameter(USER_HP_PARAM, userHP)
                 .appendQueryParameter(USER_PASSWORD_PARAM, userPassword)
                 .build();

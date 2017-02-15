@@ -44,14 +44,35 @@ public class ReservationProvider extends ContentProvider {
     @Override
     public int bulkInsert(@Nullable Uri uri, @Nullable ContentValues[] values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        int rowsInserted;
 
         switch (cUriMatcher.match(uri)) {
             case CODE_CITY:
                 db.beginTransaction();
-                int rowsInserted = 0;
+                rowsInserted = 0;
                 try {
                     for (ContentValues value : values) {
                         long _id = db.insert(ReservationContract.CityEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (rowsInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted;
+
+            case CODE_USER:
+                db.beginTransaction();
+                rowsInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(ReservationContract.UserEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             rowsInserted++;
                         }
@@ -77,6 +98,8 @@ public class ReservationProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
 
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+        Log.d("uri masuk", String.valueOf(uri));
 
         switch (cUriMatcher.match(uri)) {
             case CODE_CITY: {
@@ -135,6 +158,7 @@ public class ReservationProvider extends ContentProvider {
                     if (id > 0) {
                         Uri returnUri = ContentUris.withAppendedId(ReservationContract.UserEntry.CONTENT_URI, id);
                         getContext().getContentResolver().notifyChange(returnUri, null);
+                        Log.d("From Provider", String.valueOf(returnUri));
                         Log.d("From Provider", "insert user berhasil");
                         return returnUri;
                     }
@@ -152,26 +176,22 @@ public class ReservationProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-        int deleted = 0;
+        int delete_count = 0;
 
         switch (cUriMatcher.match(uri)) {
             case CODE_USER: {
-                db.beginTransaction();
-                try {
-                    deleted = db.delete(ReservationContract.UserEntry.TABLE_NAME, selection, selectionArgs);
-                    if(deleted > 0) {
-                        return deleted;
-                    }
-                    db.setTransactionSuccessful();
-                } finally {
-                    db.endTransaction();
-                }
-                throw new SQLException("Error deleting table: " + ReservationContract.UserEntry.TABLE_NAME);
+                Log.d("From Provider", "masuk delete method");
+                delete_count = db.delete(ReservationContract.UserEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
+        if(selection == null || delete_count != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return delete_count;
     }
 
     @Override

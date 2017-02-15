@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chamber Studio</string>
+    <string name="app_name">Chamber</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

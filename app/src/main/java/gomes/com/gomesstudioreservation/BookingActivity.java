@@ -1,13 +1,15 @@
 package gomes.com.gomesstudioreservation;
 
 import android.app.Activity;
-import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,8 +37,9 @@ import gomes.com.gomesstudioreservation.data.ReservationSessionManager;
 import gomes.com.gomesstudioreservation.utilities.BasicCalendar;
 import gomes.com.gomesstudioreservation.utilities.FakeDataUtils;
 
-public class BookingActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class BookingActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String TAG = BookingActivity.class.getSimpleName();
 
@@ -50,7 +53,8 @@ public class BookingActivity extends AppCompatActivity
             ReservationContract.UserEntry.KEY_USER_EMAIL
     };
 
-    private static final int REQUEST_CODE_CALENDAR = 100;
+    private static final int USER_SESSION_LOADER = 100;
+    private static final int REQUEST_CODE_CALENDAR = 200;
 
     // toolbar titles respected to selected nav menu item
     private String[] activityTitles;
@@ -60,8 +64,11 @@ public class BookingActivity extends AppCompatActivity
 
     private ArrayList<String> cityNames;
     private ArrayList<String> studioNames;
+    private HashMap<String, String> user;
 
-    private TextView textName, textEmail;
+    private View navHeader;
+    private TextView textName;
+    private TextView textEmail;
     private ProgressBar mLoadingIndicator;
     private EditText namaBand;
     private EditText tanggalBooking;
@@ -82,7 +89,9 @@ public class BookingActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.app_name);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView textToolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        textToolbarTitle.setText(R.string.app_name);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -94,21 +103,21 @@ public class BookingActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // load toolbar titles from string resources
-        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+        // Navigation view header
+        navHeader = navigationView.getHeaderView(0);
+        textName = (TextView) navHeader.findViewById(R.id.tv_username);
+        textEmail = (TextView) navHeader.findViewById(R.id.tv_email);
 
         session = new ReservationSessionManager(getApplicationContext());
         if (!session.isLoggedIn()) {
             logoutUser();
         }
 
-// Fetching user details from sqlite
-//        HashMap<String, String> user = getUserDetails();
-//        name = user.get(ReservationContract.UserEntry.KEY_USER_NAME);
-//        email = user.get(ReservationContract.UserEntry.KEY_USER_EMAIL);
-
-//        Log.d("nama", name);
-//        Log.d("email", email);
+        Intent intent = getIntent();
+//        String nama = intent.getStringExtra(ReservationContract.UserEntry.KEY_USER_NAME);
+//        String email = intent.getStringExtra(ReservationContract.UserEntry.KEY_USER_EMAIL);
+//        String noHp = intent.getStringExtra(ReservationContract.UserEntry.KEY_USER_NO_HP);
+//        addUser(nama, email, noHp);
 
         FakeDataUtils.insertFakeCityData(this);
 
@@ -117,8 +126,6 @@ public class BookingActivity extends AppCompatActivity
         btnSearch = (Button) findViewById(R.id.btn_search_button);
         spCity = (SearchableSpinner) findViewById(R.id.sp_select_town);
         spStudio = (SearchableSpinner) findViewById(R.id.sp_select_studio);
-        textName = (TextView) findViewById(R.id.tv_username);
-        textEmail = (TextView) findViewById(R.id.tv_email);
 
         cityNames = new ArrayList<>();
         ArrayAdapter<String> mCityAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getCitySpinnerData());
@@ -135,8 +142,8 @@ public class BookingActivity extends AppCompatActivity
         spStudio.setTitle("Select Studio");
         spStudio.setPositiveButton("OK");
 
-        // load nav menu header data
-        loadNavHeader();
+        user = new HashMap<String, String>();
+        getSupportLoaderManager().initLoader(USER_SESSION_LOADER, null, this);
     }
 
     View.OnTouchListener operation = new View.OnTouchListener() {
@@ -209,42 +216,45 @@ public class BookingActivity extends AppCompatActivity
     }
 
     // populate studio spinner data
-//    public String[] getStudioSpinnerData() {
-//        return null;
-//    }
-
-    public HashMap<String, String> getUserDetails() {
-        HashMap<String, String> user = new HashMap<String, String>();
-        Uri singleUri = ContentUris.withAppendedId(ReservationContract.UserEntry.CONTENT_URI, 1);
-        Cursor cursor = getBaseContext().getContentResolver().query(
-                singleUri,
-                MAIN_USER_PROJECTION,
-                null,
-                null,
-                null
-        );
-        Log.d("Cursor Total User", String.valueOf(cursor.getCount()));
-        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
-                Log.d("test masuk ", String.valueOf(cursor.getCount()));
-                user.put(ReservationContract.UserEntry.KEY_USER_NAME, cursor.getString(cursor.getColumnIndex(ReservationContract.UserEntry.KEY_USER_NAME)));
-                user.put(ReservationContract.UserEntry.KEY_USER_EMAIL, cursor.getString(cursor.getColumnIndex(ReservationContract.UserEntry.KEY_USER_EMAIL)));
-            }
-//            user.put(ReservationContract.UserEntry.KEY_USER_NAME, cursor.getString(1));
-//            user.put(ReservationContract.UserEntry.KEY_USER_EMAIL, cursor.getString(2));
-        }
-        Log.d("fetch_user", user.get(ReservationContract.UserEntry.KEY_USER_NAME));
-        cursor.close();
-        // return user
-        Log.d(TAG, "Fetching user from Sqlite " + user.toString());
-        return user;
+    public String[] getStudioSpinnerData() {
+        return null;
     }
 
+//    public HashMap<String, String> getUserDetails() {
+//        Uri singleUri = ContentUris.withAppendedId(ReservationContract.UserEntry.CONTENT_URI, 1);
+//        Cursor cursor = getBaseContext().getContentResolver().query(
+//                singleUri,
+//                MAIN_USER_PROJECTION,
+//                null,
+//                null,
+//                null
+//        );
+//        HashMap<String, String> user = new HashMap<String, String>();
+//        if (cursor != null && cursor.moveToFirst()) {
+//            while (cursor.moveToNext()) {
+//                Log.d("test masuk ", String.valueOf(cursor.getCount()));
+//                user.put(ReservationContract.UserEntry.KEY_USER_NAME, cursor.getString(cursor.getColumnIndex(ReservationContract.UserEntry.KEY_USER_NAME)));
+//                user.put(ReservationContract.UserEntry.KEY_USER_EMAIL, cursor.getString(cursor.getColumnIndex(ReservationContract.UserEntry.KEY_USER_EMAIL)));
+//            }
+////            user.put(ReservationContract.UserEntry.KEY_USER_NAME, cursor.getString(1));
+////            user.put(ReservationContract.UserEntry.KEY_USER_EMAIL, cursor.getString(2));
+//        }
+//        if(cursor != null) {
+//            cursor.close();
+//        }
+//        Log.d("fetch_user", user.get(ReservationContract.UserEntry.KEY_USER_NAME));
+//        Log.d("Cursor Total User", String.valueOf(cursor.getCount()));
+//        Log.d(TAG, "Fetching user from Sqlite " + user.toString());
+//        return user;
+//    }
+
     private void loadNavHeader() {
-        // name, website
-//        textName.setText(name);
-//        textEmail.setText(email);
-//        // loading header background image
+        name = user.get(ReservationContract.UserEntry.KEY_USER_NAME);
+        email = user.get(ReservationContract.UserEntry.KEY_USER_EMAIL);
+
+        textName.setText(name);
+        textEmail.setText(email);
+        // loading header background image
 //        Glide.with(this).load(urlNavHeaderBg)
 //                .crossFade()
 //                .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -263,15 +273,16 @@ public class BookingActivity extends AppCompatActivity
     }
 
     private void logoutUser() {
+        getSupportLoaderManager().destroyLoader(USER_SESSION_LOADER);
         session.setLogin(false);
+
         Uri uri = ReservationContract.UserEntry.CONTENT_URI;
-        this.getContentResolver().delete(uri, null, null);
+        getApplicationContext().getContentResolver().delete(uri, null, null);
         Log.d(TAG, "Deleted all user info from sqlite");
 
         // Launching the login activity
         Intent intent = new Intent(BookingActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
     }
 
     @Override
@@ -300,7 +311,6 @@ public class BookingActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
@@ -340,5 +350,36 @@ public class BookingActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int loaderId, Bundle bundle) {
+        switch (loaderId) {
+            case USER_SESSION_LOADER:
+                Uri userQueryUri = ReservationContract.UserEntry.CONTENT_URI;
+                return new CursorLoader(
+                        this,
+                        userQueryUri,
+                        MAIN_USER_PROJECTION,
+                        null,
+                        null,
+                        null);
+            default:
+                throw new RuntimeException("Loader Not Implemented: " + loaderId);
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d("User terlogin: ", String.valueOf(data.getCount()));
+        data.moveToFirst();
+        user.put(ReservationContract.UserEntry.KEY_USER_NAME, data.getString(data.getColumnIndex(ReservationContract.UserEntry.KEY_USER_NAME)));
+        user.put(ReservationContract.UserEntry.KEY_USER_EMAIL, data.getString(data.getColumnIndex(ReservationContract.UserEntry.KEY_USER_EMAIL)));
+        loadNavHeader();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

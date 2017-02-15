@@ -8,6 +8,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 import gomes.com.gomesstudioreservation.data.ReservationContract;
 
@@ -21,10 +23,9 @@ public class StudioJsonUtils {
     private static final String STUDIO_ID = "id_studio";
     private static final String STUDIO_NAMA = "nama_studio";
     private static final String STUDIO_ALAMAT = "alamat_studio";
-    private static final String STUDIO_HARGA = "harga_studio";
     private static final String STUDIO_TELEPON = "telepon_studio";
-//    private static final String STUDIO_OPEN_HOUR = "studio_open";
-//    private static final String STUDIO_CLOSE_HOUR = "stuio_close";
+    private static final String STUDIO_OPEN_HOUR = "studio_open";
+    private static final String STUDIO_CLOSE_HOUR = "stuio_close";
     private static final String STUDIO_MESSAGE_CODE = "cod";
 
     public static ContentValues[] getStudioContentValuesFromJson(Context context, String studioJsonStr)
@@ -51,20 +52,18 @@ public class StudioJsonUtils {
 
             String namaStudio;
             String alamatStudio;
-            int hargaStudio;
             String teleponStudio;
-//            String openHour;
-//            String closeHour;
+            String openHour;
+            String closeHour;
             int idStudio;
 
             JSONObject studio = jsonStudioArray.getJSONObject(i);
             idStudio = studio.getInt(STUDIO_ID);
             namaStudio = studio.getString(STUDIO_NAMA);
             alamatStudio = studio.getString(STUDIO_ALAMAT);
-            hargaStudio = studio.getInt(STUDIO_HARGA);
             teleponStudio = studio.getString(STUDIO_TELEPON);
-//            openHour = studio.getString(STUDIO_OPEN_HOUR);
-//            closeHour = studio.getString(STUDIO_CLOSE_HOUR);
+            openHour = studio.getString(STUDIO_OPEN_HOUR);
+            closeHour = studio.getString(STUDIO_CLOSE_HOUR);
 
             ContentValues studioValues = new ContentValues();
             studioValues.put(ReservationContract.StudioEntry.COLUMN_STUDIO_ID, idStudio);
@@ -78,5 +77,19 @@ public class StudioJsonUtils {
             studioContentValues[i] = studioValues;
         }
     return studioContentValues;
+    }
+
+    public static void insertStudioData(Context context)  {
+        List<ContentValues> studioValues = new ArrayList<ContentValues>();
+        // Studio data
+        for(int i=0; i<; i++) {
+            studioValues.add(StudioJsonUtils.getStudioContentValuesFromJson(i));
+        }
+
+        // Bulk Insert our new city data into reservation DB
+        context.getContentResolver().bulkInsert(
+                ReservationContract.CityEntry.CONTENT_URI,
+                studioValues.toArray(new ContentValues[4]));
+//        Log.d("jumlah data masuk", String.valueOf(fakeValues.size()));
     }
 }
