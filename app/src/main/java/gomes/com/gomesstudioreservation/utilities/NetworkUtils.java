@@ -25,6 +25,9 @@ public final class NetworkUtils {
     // List Kota + Studio API
     public static final String KOTA_STUDIO_CHAMBER_URL =
             "http://128.199.139.178/reservasistudio/public/index.php/j/kotastudio";
+    // Search Jadwal
+    public static final String MANAGE_BOOKING_CHAMBER_URL =
+            "http://128.199.139.178/reservasistudio/public/index.php/j/jadwal";
 
     // format query parameter to API
     private static final String USERNAME_PARAM = "user_name";

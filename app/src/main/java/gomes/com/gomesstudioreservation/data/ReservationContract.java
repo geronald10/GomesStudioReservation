@@ -10,6 +10,7 @@ public class ReservationContract {
     public static final String PATH_STUDIO = "studio";
     public static final String PATH_CITY = "city";
     public static final String PATH_USER = "user";
+    public static final String PATH_JADWAL = "jadwal";
 
     public static final class UserEntry implements BaseColumns {
 
@@ -22,7 +23,6 @@ public class ReservationContract {
         public static final String KEY_USER_EMAIL = "user_email";
         public static final String KEY_USER_ID = "user_id";
         public static final String KEY_TIPE_USER = "tipe_user";
-        public static final String KEY_TIPE_USER_ID = "tipe_user_id";
         public static final String KEY_USER_NO_HP = "user_hp";
         public static final String KEY_USER_PASSWORD = "user_password";
     }
@@ -52,5 +52,21 @@ public class ReservationContract {
         public static final String TABLE_NAME = "city";
         public static final String COLUMN_CITY_ID = "city_id";
         public static final String COLUMN_CITY_NAMA = "city_name";
+    }
+
+    public static final class JadwalEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_JADWAL)
+                .build();
+
+        public static final String TABLE_NAME = "jadwal";
+        public static final String COLUMN_TANGGAL = "tanggal";
+        public static final String COLUMN_ROOM_ID = "room_id";
+        public static final String COLUMN_JADWAL_ID = "jadwal_id";
+        public static final String COLUMN_JADWAL_START = "jadwal_start";
+        public static final String COLUMN_JADWAL_END = "jadwal_end";
+        public static final String COLUMN_CODE = "code";
+        public static final String COLUMN_STATUS = "status";
     }
 }

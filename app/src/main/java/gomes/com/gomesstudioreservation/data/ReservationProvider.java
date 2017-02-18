@@ -1,11 +1,9 @@
 package gomes.com.gomesstudioreservation.data;
 
 import android.content.ContentProvider;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
@@ -20,6 +18,8 @@ public class ReservationProvider extends ContentProvider {
     public static final int CODE_STUDIO_WITH_ID = 210;
     public static final int CODE_USER = 300;
     public static final int CODE_USER_WITH_ID = 310;
+    public static final int CODE_JADWAL = 400;
+    public static final int CODE_JADWAL_WITH_ID = 410;
 
     private static final UriMatcher cUriMatcher = buildUriMatcher();
     private ReservationDBHelper mOpenHelper;
@@ -34,6 +34,8 @@ public class ReservationProvider extends ContentProvider {
         matcher.addURI(authority, ReservationContract.PATH_USER + "/#", CODE_USER_WITH_ID);
         matcher.addURI(authority, ReservationContract.PATH_STUDIO, CODE_STUDIO);
         matcher.addURI(authority, ReservationContract.PATH_STUDIO + "/#", CODE_STUDIO_WITH_ID);
+        matcher.addURI(authority, ReservationContract.PATH_JADWAL, CODE_JADWAL);
+        matcher.addURI(authority, ReservationContract.PATH_JADWAL + "/#", CODE_JADWAL_WITH_ID);
 
         return matcher;
     }
@@ -48,6 +50,7 @@ public class ReservationProvider extends ContentProvider {
     public int bulkInsert(@Nullable Uri uri, @Nullable ContentValues[] values) {
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         int rowsInserted;
+        Log.d("masuk sini bulk insert", String.valueOf(uri));
 
         switch (cUriMatcher.match(uri)) {
             case CODE_CITY:
@@ -63,6 +66,7 @@ public class ReservationProvider extends ContentProvider {
                     db.setTransactionSuccessful();
                 } finally {
                     db.endTransaction();
+                    db.close();
                 }
 
                 if (rowsInserted > 0) {
@@ -83,6 +87,7 @@ public class ReservationProvider extends ContentProvider {
                     db.setTransactionSuccessful();
                 } finally {
                     db.endTransaction();
+                    db.close();
                 }
 
                 if (rowsInserted > 0) {
@@ -103,12 +108,32 @@ public class ReservationProvider extends ContentProvider {
                     db.setTransactionSuccessful();
                 } finally {
                     db.endTransaction();
+                    db.close();
                 }
 
                 if (rowsInserted > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return rowsInserted;
+
+            case CODE_JADWAL:
+                db.beginTransaction();
+                rowsInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long _id = db.insert(ReservationContract.JadwalEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                    db.close();
+                }
+                if (rowsInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
 
             default:
                 return super.bulkInsert(uri, values);
@@ -146,6 +171,12 @@ public class ReservationProvider extends ContentProvider {
                         + uri.getLastPathSegment());
                 break;
             }
+
+            case CODE_JADWAL: {
+                queryBuilder.setTables(ReservationContract.JadwalEntry.TABLE_NAME);
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -173,32 +204,55 @@ public class ReservationProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-
-        switch (cUriMatcher.match(uri)) {
-            case CODE_USER: {
-                db.beginTransaction();
-                try {
-                    long id = db.insert(
-                            ReservationContract.UserEntry.TABLE_NAME,
-                            null,
-                            contentValues);
-                    if (id > 0) {
-                        Uri returnUri = ContentUris.withAppendedId(ReservationContract.UserEntry.CONTENT_URI, id);
-                        getContext().getContentResolver().notifyChange(returnUri, null);
-                        Log.d("From Provider", String.valueOf(returnUri));
-                        Log.d("From Provider", "insert user berhasil");
-                        return returnUri;
-                    }
-                    db.setTransactionSuccessful();
-                }finally {
-                    db.endTransaction();
-                }
-                throw new SQLException("Error inserting into table: " + ReservationContract.UserEntry.TABLE_NAME);
-            }
-            default:
-                throw new UnsupportedOperationException("Unknown uri: " + uri);
-        }
+////        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+////
+////        switch (cUriMatcher.match(uri)) {
+////            case CODE_USER:
+////                db.beginTransaction();
+////                try {
+////                    long id = db.insert(
+////                            ReservationContract.UserEntry.TABLE_NAME,
+////                            null,
+////                            contentValues);
+////                    if (id > 0) {
+////                        Uri returnUri = ContentUris.withAppendedId(ReservationContract.UserEntry.CONTENT_URI, id);
+////                        getContext().getContentResolver().notifyChange(returnUri, null);
+////                        Log.d("From Provider", String.valueOf(returnUri));
+////                        Log.d("From Provider", "insert jadwal berhasil");
+////                        return returnUri;
+////                    }
+////                    db.setTransactionSuccessful();
+////                } finally {
+////                    db.endTransaction();
+////                    db.close();
+////                }
+////                throw new SQLException("Error inserting into table: " + ReservationContract.UserEntry.TABLE_NAME);
+////
+////            case CODE_JADWAL:
+////                db.beginTransaction();
+////                try {
+////                    long id = db.insert(
+////                            ReservationContract.JadwalEntry.TABLE_NAME,
+////                            null,
+////                            contentValues);
+////                    if (id > 0) {
+////                        Uri returnUri = ContentUris.withAppendedId(ReservationContract.JadwalEntry.CONTENT_URI, id);
+////                        getContext().getContentResolver().notifyChange(returnUri, null);
+////                        Log.d("From Provider", String.valueOf(returnUri));
+////                        Log.d("From Provider", "insert user berhasil");
+////                        return returnUri;
+////                    }
+////                    db.setTransactionSuccessful();
+////                } finally {
+////                    db.endTransaction();
+////                    db.close();
+////                }
+////                throw new SQLException("Error inserting into table: " + ReservationContract.JadwalEntry.TABLE_NAME);
+////
+////            default:
+////                throw new UnsupportedOperationException("Unknown uri: " + uri);
+//        }
+        return null;
     }
 
     @Override
@@ -222,11 +276,16 @@ public class ReservationProvider extends ContentProvider {
                 delete_count = db.delete(ReservationContract.StudioEntry.TABLE_NAME, selection, selectionArgs);
                 break;
 
+            case CODE_JADWAL:
+                Log.d("From Provider", "masuk delete method");
+                delete_count = db.delete(ReservationContract.JadwalEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        if(selection == null || delete_count != 0) {
+        if (selection == null || delete_count != 0) {
             getContext().getContentResolver().notifyChange(uri, null);
         }
         return delete_count;

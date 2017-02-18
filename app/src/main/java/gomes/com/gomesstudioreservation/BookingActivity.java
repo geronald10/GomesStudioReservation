@@ -70,6 +70,7 @@ public class BookingActivity extends AppCompatActivity implements
     };
 
     public static final String[] MAIN_USER_PROJECTION = {
+            ReservationContract.UserEntry.KEY_USER_ID,
             ReservationContract.UserEntry.KEY_USER_NAME,
             ReservationContract.UserEntry.KEY_USER_EMAIL
     };
@@ -95,6 +96,7 @@ public class BookingActivity extends AppCompatActivity implements
     private EditText tanggalBooking;
     private String studioKey;
     private String selectedDate;
+    private String userId;
     private String formattedSelectedDate;
     private Button btnSearch;
     private SearchableSpinner spStudio;
@@ -158,8 +160,24 @@ public class BookingActivity extends AppCompatActivity implements
         spCity.setOnItemSelectedListener(selection);
         spStudio.setOnItemSelectedListener(selection);
         tanggalBooking.setOnTouchListener(operation);
+        btnSearch.setOnClickListener(todo);
         getSupportLoaderManager().initLoader(USER_SESSION_LOADER, null, this);
     }
+
+    View.OnClickListener todo = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.btn_search_button:
+                    Intent intent = new Intent(mContext, ManageBookingActivity.class);
+                    intent.putExtra("selected_date", formattedSelectedDate);
+                    intent.putExtra("selected_studio", studioKey);
+                    intent.putExtra("user_id", userId);
+                    intent.putExtra("nama_studio", namaBand.getText().toString());
+                    startActivity(intent);
+            }
+        }
+    };
 
     AdapterView.OnItemSelectedListener selection = new AdapterView.OnItemSelectedListener() {
         @Override
@@ -454,6 +472,7 @@ public class BookingActivity extends AppCompatActivity implements
         user = new HashMap<>();
         Log.d("User terlogin: ", String.valueOf(data.getCount()));
         data.moveToFirst();
+        user.put(ReservationContract.UserEntry.KEY_USER_ID, data.getString(data.getColumnIndex(ReservationContract.UserEntry.KEY_USER_ID)));
         user.put(ReservationContract.UserEntry.KEY_USER_NAME, data.getString(data.getColumnIndex(ReservationContract.UserEntry.KEY_USER_NAME)));
         user.put(ReservationContract.UserEntry.KEY_USER_EMAIL, data.getString(data.getColumnIndex(ReservationContract.UserEntry.KEY_USER_EMAIL)));
         loadNavHeader();

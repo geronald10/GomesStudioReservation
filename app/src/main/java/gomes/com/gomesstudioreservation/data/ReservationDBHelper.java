@@ -7,14 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import gomes.com.gomesstudioreservation.data.ReservationContract.CityEntry;
 import gomes.com.gomesstudioreservation.data.ReservationContract.StudioEntry;
 import gomes.com.gomesstudioreservation.data.ReservationContract.UserEntry;
+import gomes.com.gomesstudioreservation.data.ReservationContract.JadwalEntry;
 
 public class ReservationDBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "reservation.db";
-    private static final int DATABASE_VERSION = 5;
-
-    // nanti dihapus
-
+    private static final int DATABASE_VERSION = 1;
 
     public ReservationDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,6 +23,7 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
         sqlCreateUserTable(sqLiteDatabase);
         sqlCreateStudioTable(sqLiteDatabase);
         sqlCreateCityTable(sqLiteDatabase);
+        sqlCreateJadwalTable(sqLiteDatabase);
     }
 
     @Override
@@ -32,6 +31,7 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + UserEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + StudioEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CityEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + JadwalEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 
@@ -66,10 +66,25 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_USER_TABLE =
                 "CREATE TABLE " + UserEntry.TABLE_NAME + " (" +
                 UserEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                UserEntry.KEY_USER_ID + " TEXT NOT NULL, " +
                 UserEntry.KEY_USER_NAME + " TEXT NOT NULL, " +
                 UserEntry.KEY_USER_EMAIL + " TEXT NOT NULL, " +
                 UserEntry.KEY_USER_NO_HP + " TEXT NOT NULL, UNIQUE (" +
                 UserEntry.KEY_USER_EMAIL + ") ON CONFLICT REPLACE);";
         sqLiteDatabase.execSQL(SQL_CREATE_USER_TABLE);
+    }
+
+    private void sqlCreateJadwalTable(SQLiteDatabase sqLiteDatabase) {
+        final String SQL_CREATE_JADWAL_TABLE =
+                "CREATE TABLE " + JadwalEntry.TABLE_NAME + " (" +
+                JadwalEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                JadwalEntry.COLUMN_TANGGAL + " TEXT NOT NULL, " +
+                JadwalEntry.COLUMN_CODE + " TEXT NOT NULL, " +
+                JadwalEntry.COLUMN_STATUS + " TEXT NOT NULL, " +
+                JadwalEntry.COLUMN_ROOM_ID + " TEXT NOT NULL, " +
+                JadwalEntry.COLUMN_JADWAL_ID + " TEXT NOT NULL, " +
+                JadwalEntry.COLUMN_JADWAL_START + " TEXT NOT NULL, " +
+                JadwalEntry.COLUMN_JADWAL_END + " TEXT NOT NULL ON CONFLICT REPLACE);";
+        sqLiteDatabase.execSQL(SQL_CREATE_JADWAL_TABLE);
     }
 }

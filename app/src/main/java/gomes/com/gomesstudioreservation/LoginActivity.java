@@ -122,12 +122,13 @@ public class LoginActivity extends AppCompatActivity {
                         session.setLogin(true);
 
                         JSONObject user = jsonObject.getJSONObject("user");
+                        String userId = user.getString(ReservationContract.UserEntry.KEY_USER_ID);
                         String name = user.getString(ReservationContract.UserEntry.KEY_USER_NAME);
                         String email = user.getString(ReservationContract.UserEntry.KEY_USER_EMAIL);
                         String noHp = user.getString(ReservationContract.UserEntry.KEY_USER_NO_HP);
 
                         // Inserting row in users table
-                        addUser(name, email, noHp);
+                        addUser(userId, name, email, noHp);
 
                         // Launch main activity
                         Intent intent = new Intent(LoginActivity.this,
@@ -183,13 +184,14 @@ public class LoginActivity extends AppCompatActivity {
             pDialog.dismiss();
     }
 
-    public void addUser(String username, String email, String noHP) {
+    public void addUser(String userId, String username, String email, String noHP) {
         //        ReservationDBHelper db = new ReservationDBHelper(BookingActivity.this);
         Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
         final ContentValues values = new ContentValues();
 //
 //        AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContentResolver()) {
 //        };
+        values.put(ReservationContract.UserEntry.KEY_USER_ID, userId);
         values.put(ReservationContract.UserEntry.KEY_USER_NAME, username);
         values.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
         values.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHP);
@@ -197,13 +199,13 @@ public class LoginActivity extends AppCompatActivity {
 //        queryHandler.startInsert(-1, null, mNewUri, values);
 //        Log.d("Insertion from login ", values.toString());
 
-        List<ContentValues> fakeValues = new ArrayList<ContentValues>();
-        fakeValues.add(values);
+        List<ContentValues> userValues = new ArrayList<ContentValues>();
+        userValues.add(values);
 
         this.getContentResolver().bulkInsert(
                 mNewUri,
-                fakeValues.toArray(new ContentValues[1]));
-        Log.d("jumlah data dikirim", String.valueOf(fakeValues.size()));
+                userValues.toArray(new ContentValues[1]));
+        Log.d("jumlah data dikirim", String.valueOf(userValues.size()));
 
 //        Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
 //        final ContentValues values = new ContentValues();

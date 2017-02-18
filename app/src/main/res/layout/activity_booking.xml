@@ -22,9 +22,7 @@
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            tools:layout_editor_absoluteY="567dp"
-            tools:layout_editor_absoluteX="0dp" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_ruang_studio"
