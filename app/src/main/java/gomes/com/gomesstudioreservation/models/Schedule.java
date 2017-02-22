@@ -1,51 +1,37 @@
 package gomes.com.gomesstudioreservation.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
+import java.io.Serializable;
 
-public class Schedule implements Parcelable {
-    public static final Parcelable.Creator<Schedule> CREATOR
-            = new Parcelable.Creator<Schedule>() {
-        public Schedule createFromParcel(Parcel in) {
-            Log.d("create form parcel", "Schedule");
-            return new Schedule(in);
-        }
-        public Schedule[] newArray(int size) {
-            return new Schedule[size];
-        }
-    };
+public class Schedule implements Serializable {
 
     private String tanggal;
-    private String code;
-    private String status;
     private String roomId;
     private String jadwalId;
     private String jadwalStart;
     private String jadwalEnd;
+    private String harga;
+    private boolean isSelected;
 
     public Schedule() {
 
     }
 
-    public Schedule(Parcel input) {
-        tanggal = input.readString();
-        code = input.readString();
-        status = input.readString();
-        roomId = input.readString();
-        jadwalId = input.readString();
-        jadwalStart = input.readString();
-        jadwalEnd = input.readString();
-    }
-
-    public Schedule(String tanggal, String code, String status, String roomId, String jadwalId, String jadwalStart, String jadwalEnd) {
+    public Schedule(String tanggal, String roomId, String jadwalId, String jadwalStart, String jadwalEnd, String harga, boolean isSelected) {
         this.tanggal = tanggal;
-        this.code = code;
-        this.status = status;
         this.roomId = roomId;
         this.jadwalId = jadwalId;
         this.jadwalStart = jadwalStart;
         this.jadwalEnd = jadwalEnd;
+        this.harga = harga;
+        this.isSelected = isSelected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public String getTanggal() {
@@ -54,22 +40,6 @@ public class Schedule implements Parcelable {
 
     public void setTanggal(String tanggal) {
         this.tanggal = tanggal;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String getRoomId() {
@@ -104,19 +74,11 @@ public class Schedule implements Parcelable {
         this.jadwalEnd = jadwalEnd;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getHarga() {
+        return harga;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(tanggal);
-        dest.writeString(code);
-        dest.writeString(status);
-        dest.writeString(roomId);
-        dest.writeString(jadwalId);
-        dest.writeString(jadwalStart);
-        dest.writeString(jadwalEnd);
+    public void setHarga(String harga) {
+        this.harga = harga;
     }
 }

@@ -119,13 +119,14 @@ public class LoginActivity extends AppCompatActivity {
                     // Check for error node in json
                     if (code.equals("1")) {
                         // user successfully logged in. Create Login session
-                        session.setLogin(true);
 
                         JSONObject user = jsonObject.getJSONObject("user");
                         String userId = user.getString(ReservationContract.UserEntry.KEY_USER_ID);
                         String name = user.getString(ReservationContract.UserEntry.KEY_USER_NAME);
                         String email = user.getString(ReservationContract.UserEntry.KEY_USER_EMAIL);
                         String noHp = user.getString(ReservationContract.UserEntry.KEY_USER_NO_HP);
+
+                        session.createLoginSession(userId, name, email);
 
                         // Inserting row in users table
                         addUser(userId, name, email, noHp);

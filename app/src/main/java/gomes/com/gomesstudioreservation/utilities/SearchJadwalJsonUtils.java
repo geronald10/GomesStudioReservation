@@ -20,13 +20,14 @@ public class SearchJadwalJsonUtils {
     private static final String JADWAL_ID = "jadwal_id";
     private static final String JADWAL_START = "jadwal_start";
     private static final String JADWAL_END = "jadwal_end";
+    private static final String HARGA = "harga";
     private static final String CODE = "code";
     private static final String STATUS = "status";
 
     public static List<ContentValues> getJadwalContentValuesFromJson(String jadwalJsonResponse)
             throws JSONException {
 
-        String tanggal, roomId, jadwalId, jadwalStart, jadwalEnd, code, status;
+        String tanggal, roomId, jadwalId, jadwalStart, jadwalEnd, code, status, harga;
         List<ContentValues> jadwalContentValues = new ArrayList<ContentValues>();
 
         Log.d("test jadwal volley", "masuk sini");
@@ -48,6 +49,7 @@ public class SearchJadwalJsonUtils {
                 for (int j = 0; j < listRuangJsonArray.length(); j++) {
                     JSONObject roomJadwalJsonObject = listRuangJsonArray.getJSONObject(j);
                     roomId = roomJadwalJsonObject.getString(ROOM_ID);
+                    harga = roomJadwalJsonObject.getString(HARGA);
                     JSONArray jadwalJsonArray = roomJadwalJsonObject.getJSONArray(JADWAL);
 
                     Log.d("length jadwal", String.valueOf(jadwalJsonArray.length()));
@@ -65,6 +67,7 @@ public class SearchJadwalJsonUtils {
                         jadwalValues.put(JADWAL_ID, jadwalId);
                         jadwalValues.put(JADWAL_START, jadwalStart);
                         jadwalValues.put(JADWAL_END, jadwalEnd);
+                        jadwalValues.put(HARGA, harga);
 
                         jadwalContentValues.add(jadwalValues);
                     }

@@ -4,15 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/text1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:padding="32dp"
-        android:text="Tgl 1"
-        android:textSize="24sp" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvJadwalByDate"
         android:layout_width="match_parent"

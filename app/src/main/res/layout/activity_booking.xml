@@ -2,19 +2,19 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_booking"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:theme="@style/AppTheme.NoActionBar"
-    tools:context=".BookingActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context=".BookingActivity">
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/activity_booking"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/parent_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <ProgressBar
@@ -22,17 +22,19 @@
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="invisible"
+            tools:layout_editor_absoluteY="25dp"
+            tools:layout_editor_absoluteX="0dp" />
 
         <ImageView
             android:id="@+id/iv_ruang_studio"
             android:layout_width="wrap_content"
-            android:layout_height="108dp"
+            android:layout_height="148dp"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/iv_header_booking"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
             app:srcCompat="@drawable/music_studio_sample" />
 
         <ImageView
@@ -111,7 +113,7 @@
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/sp_select_town"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginTop="8dp"
@@ -142,7 +144,7 @@
         <com.toptoche.searchablespinnerlibrary.SearchableSpinner
             android:id="@+id/sp_select_studio"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginTop="8dp"
@@ -176,7 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:layout_marginRight="32dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="@string/no_selection_label"
             android:inputType="date"
@@ -196,10 +198,10 @@
             android:textColor="@android:color/white"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edt_select_date"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="1.0" />
 
     </android.support.constraint.ConstraintLayout>

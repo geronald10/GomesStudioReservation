@@ -7,30 +7,35 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import gomes.com.gomesstudioreservation.models.Schedule;
+import gomes.com.gomesstudioreservation.utilities.RupiahCurrencyFormat;
+
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleAdapterViewHolder> {
 
-    private final Context mContext;
+    private AdapterCallback mAdapterCallback;
 
-    final private ScheduleAdapterOnClickHandler mClickHandler;
-
-    public interface ScheduleAdapterOnClickHandler {
-        void onClick(long date);
+    public interface AdapterCallback {
+        void onMethodCallback();
     }
+
+    private LayoutInflater mLayoutInflater;
+    public Context mContext;
 
     private Cursor mCursor;
 
-    private ArrayList<Schedule> mListSchedule = new ArrayList<>();
-    private LayoutInflater mLayoutInflater;
+    public List<Schedule> checkedSchedule = new ArrayList<>();
 
-    public ScheduleAdapter(Context context, ScheduleAdapterOnClickHandler clickHandler) {
+    public ScheduleAdapter(Context context, AdapterCallback adapterCallback) {
         mContext = context;
-        mClickHandler = clickHandler;
+        mAdapterCallback = adapterCallback;
         mLayoutInflater = LayoutInflater.from(context);
     }
 
@@ -42,10 +47,37 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     }
 
     @Override
-    public void onBindViewHolder(ScheduleAdapterViewHolder holder, int position) {
+    public void onBindViewHolder(final ScheduleAdapterViewHolder holder, final int position) {
+
         mCursor.moveToPosition(position);
-        String roomId = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_ROOM_ID);
-        holder.scheduleStudioRoom.setText();
+        final String roomId = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_ROOM_ID);
+        final String tanggal = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_TANGGAL);
+        final String jadwalId = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_ID);
+        final String jadwalStart = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_START);
+        final String jadwalEnd = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_END);
+        final String hargaSewa = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_HARGA);
+        RupiahCurrencyFormat toRupiah = new RupiahCurrencyFormat();
+        final String harga = toRupiah.toRupiahFormat(String.valueOf(hargaSewa));
+        Boolean isChecked = false;
+
+        holder.scheduleStudioRoom.setText(roomId);
+        holder.scheduleStudioStartTime.setText(jadwalStart);
+        holder.scheduleStudioEndTime.setText(jadwalEnd);
+        holder.scheduleStudioHarga.setText(harga);
+        holder.checkBoxSelected.setChecked(isChecked);
+        holder.checkBoxSelected.setTag(mCursor.getPosition());
+
+        holder.checkBoxSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(mContext instanceof ManageBookingActivity)
+                {
+                    Schedule schedule = new Schedule(tanggal, roomId, jadwalId, jadwalStart, jadwalEnd, hargaSewa, true);
+                    ((ManageBookingActivity)mContext).saveToList(schedule);
+                }
+            }
+        });
+        mAdapterCallback.onMethodCallback();
     }
 
     @Override
@@ -59,26 +91,23 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         notifyDataSetChanged();
     }
 
-    class ScheduleAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        final TextView scheduleStudio;
-        final TextView scheduleStudioRoom;
-        final TextView scheduleStudioStartTime;
-        final TextView scheduleStudioEndTime;
+    public static class ScheduleAdapterViewHolder extends RecyclerView.ViewHolder {
+        TextView scheduleStudio;
+        TextView scheduleStudioRoom;
+        TextView scheduleStudioStartTime;
+        TextView scheduleStudioEndTime;
+        TextView scheduleStudioHarga;
+        CheckBox checkBoxSelected;
+        Schedule singleSchedule;
 
-        public ScheduleAdapterViewHolder(View view) {
+        ScheduleAdapterViewHolder(View view) {
             super(view);
             scheduleStudio = (TextView) itemView.findViewById(R.id.tv_studio_name);
             scheduleStudioRoom = (TextView) itemView.findViewById(R.id.tv_room);
             scheduleStudioStartTime = (TextView) itemView.findViewById(R.id.tv_waktu_mulai);
             scheduleStudioEndTime = (TextView) itemView.findViewById(R.id.tv_waktu_selesai);
-
-            view.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int adapterPosition = getAdapterPosition();
-            mCursor.moveToPosition(adapterPosition);
+            scheduleStudioHarga = (TextView) itemView.findViewById(R.id.tv_harga);
+            checkBoxSelected = (CheckBox) itemView.findViewById(R.id.cb_select_jadwal);
         }
     }
 }

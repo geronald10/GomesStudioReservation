@@ -68,5 +68,6 @@ public class ReservationContract {
         public static final String COLUMN_JADWAL_END = "jadwal_end";
         public static final String COLUMN_CODE = "code";
         public static final String COLUMN_STATUS = "status";
+        public static final String COLUMN_HARGA = "harga";
     }
 }

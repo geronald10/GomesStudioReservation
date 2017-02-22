@@ -5,9 +5,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import gomes.com.gomesstudioreservation.data.ReservationContract.CityEntry;
+import gomes.com.gomesstudioreservation.data.ReservationContract.JadwalEntry;
 import gomes.com.gomesstudioreservation.data.ReservationContract.StudioEntry;
 import gomes.com.gomesstudioreservation.data.ReservationContract.UserEntry;
-import gomes.com.gomesstudioreservation.data.ReservationContract.JadwalEntry;
 
 public class ReservationDBHelper extends SQLiteOpenHelper {
 
@@ -84,7 +84,8 @@ public class ReservationDBHelper extends SQLiteOpenHelper {
                 JadwalEntry.COLUMN_ROOM_ID + " TEXT NOT NULL, " +
                 JadwalEntry.COLUMN_JADWAL_ID + " TEXT NOT NULL, " +
                 JadwalEntry.COLUMN_JADWAL_START + " TEXT NOT NULL, " +
-                JadwalEntry.COLUMN_JADWAL_END + " TEXT NOT NULL ON CONFLICT REPLACE);";
+                JadwalEntry.COLUMN_JADWAL_END + " TEXT NOT NULL, " +
+                JadwalEntry.COLUMN_HARGA + " TEXT NOT NULL ON CONFLICT REPLACE);";
         sqLiteDatabase.execSQL(SQL_CREATE_JADWAL_TABLE);
     }
 }

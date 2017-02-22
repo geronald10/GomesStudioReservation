@@ -84,6 +84,25 @@
     <string name="label_jadwal_studio">Studio :</string>
     <string name="room_jadwal_label">Room :</string>
 
+    <string name="dialog_message">Are you sure that you want to submit your reservation data?</string>
+    <string name="dialog_title">Confirmation</string>
+    <string name="ok">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="nama_room">Ruang</string>
 
     <string name="dummy_section_text">Section %1d is just a dummy section.</string>
+    <string name="profile_label">Profile</string>
+    <string name="current_password_label">current password</string>
+    <string name="new_password_label">new password</string>
+    <string name="change_password_label">change password</string>
+    <string name="save_btn">Save</string>
+    <string name="change_password_btn">change password</string>
+    <string name="edit_profile_btn">Edit profile</string>
+    <string name="edit_btn">edit</string>
+    <string name="harga_sewa_idr_label">Harga sewa :</string>
+    <string name="confirm_new_password_hint">confirm new password</string>
+    <string name="nama_user">Nama user</string>
+    <string name="foto_user_description">foto user</string>
+    <string name="input_password_to_confirm_hint">Password confirmation</string>
+    <string name="cancel_btn_label">cancel</string>
 </resources>
