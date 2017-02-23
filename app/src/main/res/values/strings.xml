@@ -105,4 +105,10 @@
     <string name="foto_user_description">foto user</string>
     <string name="input_password_to_confirm_hint">Password confirmation</string>
     <string name="cancel_btn_label">cancel</string>
+    <string name="bgfortanggalbooking_cd">bgForTanggalBooking</string>
+    <string name="booking_date_label">Booking Date</string>
+    <string name="booked_status">Booked</string>
+    <string name="confirmed_status">confirmed</string>
+    <string name="failed_status">failed</string>
+    <string name="canceled_status">Canceled</string>
 </resources>

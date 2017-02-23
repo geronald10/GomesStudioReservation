@@ -35,7 +35,6 @@ public class SearchJadwalJsonUtils {
         Log.d("test jadwal volley", String.valueOf(jadwalJsonObject.length()));
 
         if (jadwalJsonObject.length() > 0) {
-
             JSONArray listJadwalJsonArray = jadwalJsonObject.getJSONArray(JADWAL_LIST);
             Log.d("length listJadwal", String.valueOf(listJadwalJsonArray.length()));
             for (int i = 0; i < listJadwalJsonArray.length(); i++) {

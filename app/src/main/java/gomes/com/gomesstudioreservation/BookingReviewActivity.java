@@ -185,7 +185,7 @@ public class BookingReviewActivity extends AppCompatActivity {
                 params.put(ReservationContract.JadwalEntry.COLUMN_ROOM_ID, roomId);
                 params.put("nama_band", namaBand);
                 params.put(ReservationContract.JadwalEntry.COLUMN_TANGGAL, tanggal);
-                params.put(ReservationContract.JadwalEntry.COLUMN_JADWAL_ID, jadwalId);
+                params.put("jadwal", jadwalId);
 
                 return params;
             }

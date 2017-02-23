@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tvKodeBooking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="S1333D4"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTotalTagihan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rp. 60.000, 00"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textColor="@color/colorAccent"
+        android:textSize="20sp"
+        tools:layout_editor_absoluteX="265dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/tvBandNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/band_name_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="@+id/tvKodeBooking"
+        app:layout_constraintTop_toBottomOf="@+id/tvKodeBooking" />
+
+    <TextView
+        android:id="@+id/tvSeparator"
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:text=":"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintLeft_toRightOf="@+id/tvBandNameLabel"
+        app:layout_constraintRight_toLeftOf="@+id/tvBandName"
+        app:layout_constraintTop_toTopOf="@+id/tvBandNameLabel" />
+
+    <TextView
+        android:id="@+id/tvBandName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:text="Javanoa"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBandNameLabel"
+        app:layout_constraintLeft_toRightOf="@+id/tvKodeBooking"
+        app:layout_constraintTop_toTopOf="@+id/tvBandNameLabel"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tvStudioNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/studio_name_label"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="@+id/tvBandNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvBandNameLabel" />
+
+    <TextView
+        android:id="@+id/tvStudioName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Several"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStudioNameLabel"
+        app:layout_constraintLeft_toLeftOf="@+id/tvBandName"
+        app:layout_constraintTop_toTopOf="@+id/tvStudioNameLabel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvSeparator3"
+        android:layout_width="12dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text=":"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStudioNameLabel"
+        app:layout_constraintLeft_toLeftOf="@+id/tvSeparator"
+        app:layout_constraintRight_toRightOf="@+id/tvSeparator"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/tvTanggalBooking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="22 Februari 2017"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="16sp"
+        app:layout_constraintRight_toRightOf="@+id/tvTotalTagihan"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalTagihan" />
+
+    <Button
+        android:id="@+id/btn_status_booked"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:background="#303F9F"
+        android:text="@string/booked_status"
+        android:textColor="@color/colorIcons"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="@+id/tvTotalTagihan"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalTagihan" />
+
+    <Button
+        android:id="@+id/btn_status_confirmed"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:background="#4CAF50"
+        android:text="@string/confirmed_status"
+        android:textColor="@color/colorIcons"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="@+id/tvTotalTagihan"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalTagihan" />
+
+    <Button
+        android:id="@+id/btn_status_failed"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="@string/failed_status"
+        android:textColor="@color/colorIcons"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="@+id/tvTotalTagihan"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalTagihan" />
+
+    <Button
+        android:id="@+id/btn_status_canceled"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorAccent"
+        android:visibility="invisible"
+        android:text="@string/canceled_status"
+        android:textColor="@color/colorIcons"
+        app:layout_constraintRight_toRightOf="@+id/tvTotalTagihan"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalTagihan" />
+
+</android.support.constraint.ConstraintLayout>
+
