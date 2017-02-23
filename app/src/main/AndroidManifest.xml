@@ -48,7 +48,8 @@
 
         <activity android:name=".PaymentActivity" />
 
-        <activity android:name=".BookingHistoryActivity" />
+        <activity android:name=".BookingHistoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
             android:name=".utilities.BasicCalendar"

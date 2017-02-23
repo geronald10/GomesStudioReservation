@@ -127,6 +127,12 @@ public class ProfileActivity extends BaseActivity {
                     }
                     break;
                 case R.id.btnChangePassword:
+                    edtOldPassword.getText().clear();
+                    edtNewPassword.getText().clear();
+                    edtConfirmNewPassword.getText().clear();
+                    edtOldPassword.setEnabled(true);
+                    edtNewPassword.setEnabled(true);
+                    edtConfirmNewPassword.setEnabled(true);
                     edtOldPassword.setVisibility(edtOldPassword.getVisibility() == View.INVISIBLE ? View.VISIBLE : View.INVISIBLE);
                     edtNewPassword.setVisibility(edtNewPassword.getVisibility() == View.INVISIBLE ? View.VISIBLE : View.INVISIBLE);
                     edtConfirmNewPassword.setVisibility(edtConfirmNewPassword.getVisibility() == View.INVISIBLE ? View.VISIBLE : View.INVISIBLE);
@@ -138,9 +144,9 @@ public class ProfileActivity extends BaseActivity {
                     String confirmNewPassword = edtConfirmNewPassword.getText().toString();
 
                     if (oldPassword.equals(newPassword)) {
-                        Toast.makeText(mContext, "Password lama dan baru tidak boleh sama", Toast.LENGTH_SHORT);
+                        Toast.makeText(mContext, "Password lama dan baru tidak boleh sama", Toast.LENGTH_SHORT).show();
                     } else if (!newPassword.equals(confirmNewPassword)) {
-                        Toast.makeText(mContext, "Konfirmasi Password baru tidak cocok", Toast.LENGTH_SHORT);
+                        Toast.makeText(mContext, "Konfirmasi Password baru tidak cocok", Toast.LENGTH_SHORT).show();
                     } else {
                         updateUserProfileData(userId, nameFetched, emailFetched, noHpFetched, oldPassword, newPassword);
                         edtNewPassword.setVisibility(View.INVISIBLE);
@@ -197,6 +203,8 @@ public class ProfileActivity extends BaseActivity {
                         nameFetched = user.getString(ReservationContract.UserEntry.KEY_USER_NAME);
                         emailFetched = user.getString(ReservationContract.UserEntry.KEY_USER_EMAIL);
                         noHpFetched = user.getString(ReservationContract.UserEntry.KEY_USER_NO_HP);
+
+                        Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show();
 
                         loadUserDetailData(nameFetched, emailFetched, noHpFetched);
                     }

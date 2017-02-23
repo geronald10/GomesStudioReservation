@@ -28,8 +28,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/colorAccent"
         android:textSize="20sp"
-        tools:layout_editor_absoluteX="265dp"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintTop_toTopOf="@+id/tvKodeBooking"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="16dp" />
 
     <TextView
         android:id="@+id/tvBandNameLabel"
@@ -125,7 +127,7 @@
     <Button
         android:id="@+id/btn_status_booked"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="@dimen/btn_height"
         android:layout_marginTop="8dp"
         android:background="#303F9F"
         android:text="@string/booked_status"
@@ -137,7 +139,7 @@
     <Button
         android:id="@+id/btn_status_confirmed"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="@dimen/btn_height"
         android:layout_marginTop="8dp"
         android:background="#4CAF50"
         android:text="@string/confirmed_status"
@@ -149,7 +151,7 @@
     <Button
         android:id="@+id/btn_status_failed"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="@dimen/btn_height"
         android:layout_marginTop="8dp"
         android:background="@color/colorPrimaryDark"
         android:text="@string/failed_status"
@@ -161,7 +163,7 @@
     <Button
         android:id="@+id/btn_status_canceled"
         android:layout_width="wrap_content"
-        android:layout_height="24dp"
+        android:layout_height="@dimen/btn_height"
         android:layout_marginTop="8dp"
         android:background="@color/colorAccent"
         android:visibility="invisible"
