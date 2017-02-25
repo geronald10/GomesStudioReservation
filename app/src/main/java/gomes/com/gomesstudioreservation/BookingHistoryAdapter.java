@@ -1,14 +1,13 @@
 package gomes.com.gomesstudioreservation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -17,12 +16,20 @@ import gomes.com.gomesstudioreservation.utilities.RupiahCurrencyFormat;
 
 public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAdapter.ViewHolder> {
 
+    final private BookingHistoryAdapterOnClickHandler mClickHandler;
+
+    public interface BookingHistoryAdapterOnClickHandler {
+        void onClick(int reservasiId);
+    }
+
     private Context mContext;
     private List<HistoryBooking> historyBookingList;
 
-    public BookingHistoryAdapter(Context mContext, List<HistoryBooking> historyBookingList) {
+    public BookingHistoryAdapter(Context mContext, List<HistoryBooking> historyBookingList,
+                                 BookingHistoryAdapterOnClickHandler clickHandler) {
         this.mContext = mContext;
         this.historyBookingList = historyBookingList;
+        this.mClickHandler = clickHandler;
     }
 
     @Override
@@ -75,9 +82,10 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         return historyBookingList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView kodeBooking;
+
         public TextView bandName;
         public TextView studioName;
         public TextView tagihan;
@@ -89,15 +97,43 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
 
         public ViewHolder(View itemView) {
             super(itemView);
-            kodeBooking = (TextView)itemView.findViewById(R.id.tvKodeBooking);
-            bandName = (TextView)itemView.findViewById(R.id.tvBandName);
-            studioName = (TextView)itemView.findViewById(R.id.tvStudioName);
-            tagihan = (TextView)itemView.findViewById(R.id.tvTotalTagihan);
-            statusBooked = (Button)itemView.findViewById(R.id.btn_status_booked);
-            statusConfirmed = (Button)itemView.findViewById(R.id.btn_status_confirmed);
-            statusCanceled = (Button)itemView.findViewById(R.id.btn_status_canceled);
-            statusFailed = (Button)itemView.findViewById(R.id.btn_status_failed);
-            tanggalBooking = (TextView)itemView.findViewById(R.id.tvTanggalBooking);
+            kodeBooking = (TextView) itemView.findViewById(R.id.tvKodeBooking);
+            bandName = (TextView) itemView.findViewById(R.id.tvBandName);
+            studioName = (TextView) itemView.findViewById(R.id.tvStudioName);
+            tagihan = (TextView) itemView.findViewById(R.id.tvTotalTagihan);
+            statusBooked = (Button) itemView.findViewById(R.id.btn_status_booked);
+            statusConfirmed = (Button) itemView.findViewById(R.id.btn_status_confirmed);
+            statusCanceled = (Button) itemView.findViewById(R.id.btn_status_canceled);
+            statusFailed = (Button) itemView.findViewById(R.id.btn_status_failed);
+            tanggalBooking = (TextView) itemView.findViewById(R.id.tvTanggalBooking);
+
+            itemView.setOnClickListener(this);
+//            statusBooked.setOnClickListener(this);
+//            statusConfirmed.setOnClickListener(this);
+//            statusCanceled.setOnClickListener(this);
+//            statusFailed.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            mClickHandler.onClick(historyBookingList.get(adapterPosition).getReservasiId());
+//            switch (v.getId()) {
+//                case R.id.btn_status_booked:
+//                    Intent intentToReview = new Intent(mContext, BookingDetailActivity.class);
+//                    intentToReview.putExtra("reservasi_id", historyBookingList.get(adapterPosition).getReservasiId());
+//                    mContext.startActivity(intentToReview);
+//                    break;
+//                case R.id.btn_status_confirmed:
+//                    Intent intentToDetail = new Intent(mContext, BookingDetailActivity.class);
+//                    intentToDetail.putExtra("reservasi_id", historyBookingList.get(adapterPosition).getReservasiId());
+//                    mContext.startActivity(intentToDetail);
+//                    break;
+//                case R.id.btn_status_canceled:
+//                    break;
+//                case R.id.btn_status_failed:
+//                    break;
+//            }
         }
     }
 }

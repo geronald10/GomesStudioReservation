@@ -49,6 +49,9 @@ public final class NetworkUtils {
     // Kontak Studio for Payment
     public static final String CONTACT_PAYMENT_STUDIO =
             "http://128.199.139.178/reservasistudio/public/index.php/r/kontak";
+    // Get New Jadwal
+    public static final String GET_USER_RESERVATION_DATA_DETAIL =
+            "http://128.199.139.178/reservasistudio/public/index.php/j/newjadwal";
 
     // format query parameter to API
     private static final String USERNAME_PARAM = "user_name";

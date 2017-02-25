@@ -47,7 +47,7 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int reservasiId = intent.getIntExtra("reservasi_id", 0);
 
-         getPaymentInfo(String.valueOf(reservasiId));
+        getPaymentInfo(String.valueOf(reservasiId));
     }
 
     private void getPaymentInfo(final String reservasiId) {

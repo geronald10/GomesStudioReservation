@@ -111,4 +111,5 @@
     <string name="confirmed_status">confirmed</string>
     <string name="failed_status">failed</string>
     <string name="canceled_status">Canceled</string>
+    <string name="kode_booking_label">Kode Booking :</string>
 </resources>

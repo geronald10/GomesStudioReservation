@@ -3,6 +3,7 @@ package gomes.com.gomesstudioreservation;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +34,8 @@ import gomes.com.gomesstudioreservation.utilities.DividerItemDecoration;
 import gomes.com.gomesstudioreservation.utilities.NetworkUtils;
 import gomes.com.gomesstudioreservation.utilities.SearchJadwalJsonUtils;
 
-public class BookingHistoryActivity extends BaseActivity {
+public class BookingHistoryActivity extends BaseActivity implements
+        BookingHistoryAdapter.BookingHistoryAdapterOnClickHandler {
 
     private final String TAG = BookingHistoryActivity.class.getSimpleName();
 
@@ -70,18 +72,18 @@ public class BookingHistoryActivity extends BaseActivity {
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.hasFixedSize();
 
-        mAdapter = new BookingHistoryAdapter(this, historyBookingList);
+        mAdapter = new BookingHistoryAdapter(this, historyBookingList, this);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void getBookingHistoryList(final String userId) {
+    public void getBookingHistoryList(final String userId) {
         // Tag used to cancel the request
         String tag_string_req = "req_booking_history_list";
         StringRequest stringRequest;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
 
-        progressDialog.setMessage("Fetch Hisotry Booking Data ...");
+        progressDialog.setMessage("Fetch Booking Data ...");
         showDialog();
 
         stringRequest = new StringRequest(Request.Method.POST,
@@ -161,4 +163,10 @@ public class BookingHistoryActivity extends BaseActivity {
             progressDialog.dismiss();
     }
 
+    @Override
+    public void onClick(int reservasiId) {
+        Intent intentToDetail = new Intent(mContext, BookingDetailActivity.class);
+        intentToDetail.putExtra("reservasi_id", reservasiId);
+        mContext.startActivity(intentToDetail);
+    }
 }

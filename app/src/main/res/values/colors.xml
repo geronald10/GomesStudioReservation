@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimary">#f44336</color>
     <color name="colorPrimaryDark">#D32F2F</color>
     <color name="colorPrimaryLight">#FFCDD2</color>
     <color name="colorAccent">#ff9800</color>
@@ -8,4 +8,10 @@
     <color name="colorSecondaryText">#757575</color>
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#BDBDBD</color>
+
+    <color name="colorStatusBooked">#303F9F</color>
+    <color name="colorStatusConfirmed">#4CAF50</color>
+    <color name="colorStatusCanceled">#ff9800</color>
+    <color name="colorStatusFailed">#D32F2F</color>
+
 </resources>
