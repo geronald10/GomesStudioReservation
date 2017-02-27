@@ -97,4 +97,15 @@ public class Schedule implements Serializable {
     public void setHarga(String harga) {
         this.harga = harga;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (this.tanggal.equals(((Schedule) obj).tanggal) &&
+                (this.roomId.equals(((Schedule) obj).roomId) &&
+                        (this.jadwalId.equals(((Schedule) obj).jadwalId) &&
+                                (this.jadwalStart.equals(((Schedule) obj).jadwalStart) &&
+                                        (this.jadwalEnd.equals(((Schedule) obj).jadwalEnd) &&
+                                                (this.harga.equals(((Schedule) obj).harga) &&
+                                                        (this.isSelected == (((Schedule) obj).isSelected))))))));
+    }
 }

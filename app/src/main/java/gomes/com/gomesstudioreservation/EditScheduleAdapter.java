@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -36,22 +35,41 @@ public class EditScheduleAdapter extends RecyclerView.Adapter<EditScheduleAdapte
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.scheduleStudioStartTime.setText(scheduleList.get(position).getJadwalStart());
         holder.scheduleStudioEndTime.setText(scheduleList.get(position).getJadwalEnd());
 
+        holder.checkBoxSelected.setOnCheckedChangeListener(null);
+        holder.checkBoxSelected.setChecked(scheduleList.get(position).isSelected());
 
+        holder.checkBoxSelected.setChecked(scheduleList.get(position).isSelected());
+        if (scheduleList.get(position).isSelected()) {
+            numberOfCheckboxesChecked++;
+            if (mContext instanceof EditBookingActivity) {
+                int scheduleId = scheduleList.get(position).getJadwal();
+                ((EditBookingActivity) mContext).saveToList(scheduleId);
+            }
+        }
         holder.checkBoxSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 Log.d("limitChecked", String.valueOf(limitCheck));
                 if (isChecked && numberOfCheckboxesChecked >= limitCheck) {
                     holder.checkBoxSelected.setChecked(false);
+                    holder.checkBoxSelected.setSelected(false);
                 } else {
                     if (isChecked) {
                         numberOfCheckboxesChecked++;
+                        if (mContext instanceof EditBookingActivity) {
+                            int scheduleId = scheduleList.get(position).getJadwal();
+                            ((EditBookingActivity) mContext).saveToList(scheduleId);
+                        }
                     } else {
                         numberOfCheckboxesChecked--;
+                        if (mContext instanceof EditBookingActivity) {
+                            int scheduleId = scheduleList.get(position).getJadwal();
+                            ((EditBookingActivity) mContext).removeFromList(scheduleId);
+                        }
                     }
                 }
                 Log.d("numberChecked", String.valueOf(numberOfCheckboxesChecked));

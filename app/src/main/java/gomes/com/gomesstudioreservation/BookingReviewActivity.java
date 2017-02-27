@@ -147,10 +147,12 @@ public class BookingReviewActivity extends AppCompatActivity {
 
                         JSONObject reservasi = jsonObject.getJSONObject("reservasi");
                         int reservasiId = reservasi.getInt("id");
+                        String reservasiBatas = reservasi.getString("reservasi_batas");
 
                         // Launch Booking Review Activity;
                         Intent intentToPayment = new Intent(BookingReviewActivity.this, PaymentActivity.class);
                         intentToPayment.putExtra("reservasi_id", reservasiId);
+                        intentToPayment.putExtra("reservasi_batas", reservasiBatas);
                         startActivity(intentToPayment);
                         finish();
 

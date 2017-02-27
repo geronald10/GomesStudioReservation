@@ -58,22 +58,27 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         final String hargaSewa = mCursor.getString(FragmentScheduleByDate.INDEX_JADWAL_HARGA);
         RupiahCurrencyFormat toRupiah = new RupiahCurrencyFormat();
         final String harga = toRupiah.toRupiahFormat(String.valueOf(hargaSewa));
-        Boolean isChecked = false;
 
         holder.scheduleStudioRoom.setText(roomId);
         holder.scheduleStudioStartTime.setText(jadwalStart);
         holder.scheduleStudioEndTime.setText(jadwalEnd);
         holder.scheduleStudioHarga.setText(harga);
-        holder.checkBoxSelected.setChecked(isChecked);
+        holder.checkBoxSelected.setChecked(false);
         holder.checkBoxSelected.setTag(mCursor.getPosition());
 
         holder.checkBoxSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(mContext instanceof ManageBookingActivity)
-                {
-                    Schedule schedule = new Schedule(tanggal, roomId, jadwalId, jadwalStart, jadwalEnd, hargaSewa, true);
-                    ((ManageBookingActivity)mContext).saveToList(schedule);
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    if (mContext instanceof ManageBookingActivity || holder.checkBoxSelected.isChecked()) {
+                        Schedule schedule = new Schedule(tanggal, roomId, jadwalId, jadwalStart, jadwalEnd, hargaSewa, true);
+                        ((ManageBookingActivity) mContext).saveToList(schedule);
+                    }
+                } else {
+                    if (mContext instanceof ManageBookingActivity || holder.checkBoxSelected.isChecked()) {
+                        Schedule schedule = new Schedule(tanggal, roomId, jadwalId, jadwalStart, jadwalEnd, hargaSewa, true);
+                        ((ManageBookingActivity) mContext).removeFromList(schedule);
+                    }
                 }
             }
         });

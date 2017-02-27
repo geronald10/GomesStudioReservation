@@ -29,6 +29,7 @@ public class PaymentActivity extends AppCompatActivity {
 
     private TextView tvBankAccountNumber;
     private TextView tvContactPerson;
+    private TextView tvLimitPaymentTime;
     private ProgressDialog progressDialog;
 
 
@@ -43,11 +44,14 @@ public class PaymentActivity extends AppCompatActivity {
 
         tvBankAccountNumber = (TextView)findViewById(R.id.tv_bank_account_number);
         tvContactPerson = (TextView)findViewById(R.id.tv_contact_person);
+        tvLimitPaymentTime = (TextView)findViewById(R.id.tv_limit_payment_time);
 
         Intent intent = getIntent();
         int reservasiId = intent.getIntExtra("reservasi_id", 0);
+        String reservasiBatas = intent.getStringExtra("reservasi_batas");
 
         getPaymentInfo(String.valueOf(reservasiId));
+        tvLimitPaymentTime.setText(reservasiBatas);
     }
 
     private void getPaymentInfo(final String reservasiId) {

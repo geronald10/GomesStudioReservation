@@ -313,4 +313,13 @@ public class ManageBookingActivity extends AppCompatActivity {
             Log.d("list masuk", checkedScheduleList.toString());
         }
     }
+
+    public void removeFromList(Schedule schedule) {
+        checkedScheduleList.remove(new Schedule(schedule.getTanggal(), schedule.getRoomId(),
+                schedule.getJadwalId(), schedule.getJadwalStart(), schedule.getJadwalEnd(),
+                schedule.getHarga(), true));
+        for (int i = 0; i < checkedScheduleList.size(); i++) {
+            Log.d("list masuk", checkedScheduleList.toString());
+        }
+    }
 }

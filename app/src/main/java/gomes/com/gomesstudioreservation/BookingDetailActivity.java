@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,14 +22,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.zip.InflaterInputStream;
 
 import gomes.com.gomesstudioreservation.utilities.NetworkUtils;
 import gomes.com.gomesstudioreservation.utilities.RupiahCurrencyFormat;
@@ -68,6 +64,7 @@ public class BookingDetailActivity extends AppCompatActivity {
     private String reserveStatus;
     private String reserveWaktuBooking;
     private String reserveTanggal;
+    private String reserveBatas;
     private String reserveRefund;
     private String reserveRefundPlace;
     private String refundStatus;
@@ -121,6 +118,7 @@ public class BookingDetailActivity extends AppCompatActivity {
                 case R.id.btn_continue_to_payment:
                     Intent intentToPayment = new Intent(mContext, PaymentActivity.class);
                     intentToPayment.putExtra("reservasi_id", reservationId);
+                    intentToPayment.putExtra("reservasi_batas", reserveBatas);
                     startActivity(intentToPayment);
                     break;
                 case R.id.btn_request_cancel_booking:
@@ -224,6 +222,7 @@ public class BookingDetailActivity extends AppCompatActivity {
                         reserveStatus = reservasi.getString("reservasi_status");
                         reserveWaktuBooking = reservasi.getString("reservasi_waktu_booking");
                         reserveTanggal = reservasi.getString("reservasi_tanggal");
+                        reserveBatas = reservasi.getString("reservasi_batas");
                         reserveRefund = reservasi.getString("reservasi_refund");
                         reserveRefundPlace = reservasi.getString("refunded_at");
                         refundStatus = reservasi.getString("refund_status");
