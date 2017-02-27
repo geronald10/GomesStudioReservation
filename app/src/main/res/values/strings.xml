@@ -86,6 +86,10 @@
 
     <string name="dialog_message">Are you sure that you want to submit your reservation data?</string>
     <string name="dialog_title">Confirmation</string>
+
+    <string name="dialog_cancel_booking_message">Are you sure that you want to cancel your reservation data?</string>
+    <string name="dialog_cancel_booking_title">Are you sure?</string>
+
     <string name="ok">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="nama_room">Ruang</string>
@@ -112,4 +116,13 @@
     <string name="failed_status">failed</string>
     <string name="canceled_status">Canceled</string>
     <string name="kode_booking_label">Kode Booking :</string>
+    <string name="edit_reservasi_button_label">Edit Reservasi</string>
+    <string name="cancel_reservasi_button_label">Cancel Reservasi</string>
+    <string name="headereditreservation">HeaderEditReservation</string>
+    <string name="edit_booking_label">Edit Booking</string>
+    <string name="simpan_perubahan_button_label">Simpan perubahan</string>
+    <string name="tanggal_booking_label">Tanggal Booking</string>
+    <string name="jadwal_label">Jadwal</string>
+    <string name="waktu_mulai_label">waktu mulai</string>
+    <string name="waktu_selesai_label">waktu selesai</string>
 </resources>

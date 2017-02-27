@@ -7,6 +7,7 @@ public class Schedule implements Serializable {
     private String tanggal;
     private String roomId;
     private String jadwalId;
+    private int jadwal;
     private String jadwalStart;
     private String jadwalEnd;
     private String harga;
@@ -24,6 +25,21 @@ public class Schedule implements Serializable {
         this.jadwalEnd = jadwalEnd;
         this.harga = harga;
         this.isSelected = isSelected;
+    }
+
+    public Schedule(int jadwal, String jadwalStart, String jadwalEnd, boolean isSelected) {
+        this.jadwal = jadwal;
+        this.jadwalStart = jadwalStart;
+        this.jadwalEnd = jadwalEnd;
+        this.isSelected = isSelected;
+    }
+
+    public int getJadwal() {
+        return jadwal;
+    }
+
+    public void setJadwal(int jadwal) {
+        this.jadwal = jadwal;
     }
 
     public boolean isSelected() {

@@ -2,12 +2,16 @@ package gomes.com.gomesstudioreservation;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +30,7 @@ import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.InflaterInputStream;
 
 import gomes.com.gomesstudioreservation.utilities.NetworkUtils;
 import gomes.com.gomesstudioreservation.utilities.RupiahCurrencyFormat;
@@ -36,6 +41,12 @@ public class BookingDetailActivity extends AppCompatActivity {
 
     private Context mContext;
     private ProgressDialog progressDialog;
+
+    private CardView cardViewRefund;
+
+    private Button btnContinueToPayment;
+    private Button btnContinueToEditReservation;
+    private Button btnRequestCancelBooking;
 
     private ImageView ivStatusReservasi;
     private TextView tvStatusReservasi;
@@ -50,6 +61,7 @@ public class BookingDetailActivity extends AppCompatActivity {
     private TextView tvRoomNama;
     private TextView tvStudioNama;
 
+    private int reservationId;
     private String reserveNomorBooking;
     private String reserveNamaBand;
     private String reserveTagihan;
@@ -73,7 +85,8 @@ public class BookingDetailActivity extends AppCompatActivity {
         progressDialog.setCancelable(false);
 
         Intent intent = getIntent();
-        int reservationId = intent.getIntExtra("reservasi_id", 0);
+        reservationId = intent.getIntExtra("reservasi_id", 0);
+        Log.d("cek reservasiID", String.valueOf(reservationId));
 
         tvNomorBooking = (TextView)findViewById(R.id.tvKodeBooking);
         tvNamaBand = (TextView)findViewById(R.id.tvNamaBand);
@@ -89,12 +102,62 @@ public class BookingDetailActivity extends AppCompatActivity {
         ivStatusReservasi = (ImageView)findViewById(R.id.iv_status);
         tvStatusReservasi = (TextView)findViewById(R.id.tv_status);
 
+        cardViewRefund = (CardView)findViewById(R.id.cardViewBookingRefund);
+
+        btnContinueToPayment = (Button)findViewById(R.id.btn_continue_to_payment);
+        btnContinueToEditReservation = (Button)findViewById(R.id.btn_continue_to_edit_booking);
+        btnRequestCancelBooking = (Button)findViewById(R.id.btn_request_cancel_booking);
+
+        btnContinueToPayment.setOnClickListener(operate);
+        btnContinueToEditReservation.setOnClickListener(operate);
+        btnRequestCancelBooking.setOnClickListener(operate);
         getBookingDetail(reservationId);
     }
+
+    View.OnClickListener operate = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_continue_to_payment:
+                    Intent intentToPayment = new Intent(mContext, PaymentActivity.class);
+                    intentToPayment.putExtra("reservasi_id", reservationId);
+                    startActivity(intentToPayment);
+                    break;
+                case R.id.btn_request_cancel_booking:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setMessage(R.string.dialog_cancel_booking_message)
+                            .setTitle(R.string.dialog_cancel_booking_title);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            issuedCancelBookingRequest(reservationId);
+                        }
+                    });
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    break;
+                case R.id.btn_continue_to_edit_booking:
+                    Intent intentToEditBooking = new Intent(mContext, EditBookingActivity.class);
+                    intentToEditBooking.putExtra("reservation_id", reservationId);
+                    startActivity(intentToEditBooking);
+                    break;
+            }
+        }
+    };
 
     private void loadBookingDetailEntry(String nomorBooking, String namaBand, String tagihan,
                                         String status, String waktuBooking, String tanggal, String totalRefund,
                                         String refundAt, String refundStatus, String roomNama, String studioNama) {
+
+        btnContinueToPayment.setVisibility(View.INVISIBLE);
+        btnContinueToEditReservation.setVisibility(View.INVISIBLE);
+        btnRequestCancelBooking.setVisibility(View.INVISIBLE);
+        cardViewRefund.setVisibility(View.INVISIBLE);
 
         RupiahCurrencyFormat covertedRupiah = new RupiahCurrencyFormat();
         tvNomorBooking.setText(nomorBooking);
@@ -115,14 +178,18 @@ public class BookingDetailActivity extends AppCompatActivity {
             case "0":
                 ivStatusReservasi.setBackgroundColor(getResources().getColor(R.color.colorStatusBooked));
                 tvStatusReservasi.setText(getResources().getString(R.string.booked_status));
+                btnContinueToPayment.setVisibility(View.VISIBLE);
                 break;
             case "1":
                 ivStatusReservasi.setBackgroundColor(getResources().getColor(R.color.colorStatusConfirmed));
                 tvStatusReservasi.setText(getResources().getString(R.string.confirmed_status));
+                btnContinueToEditReservation.setVisibility(View.VISIBLE);
+                btnRequestCancelBooking.setVisibility(View.VISIBLE);
                 break;
             case "2":
                 ivStatusReservasi.setBackgroundColor(getResources().getColor(R.color.colorStatusCanceled));
                 tvStatusReservasi.setText(getResources().getString(R.string.canceled_status));
+                cardViewRefund.setVisibility(View.VISIBLE);
                 break;
             case "3":
                 ivStatusReservasi.setBackgroundColor(getResources().getColor(R.color.colorStatusFailed));
@@ -166,6 +233,60 @@ public class BookingDetailActivity extends AppCompatActivity {
                         loadBookingDetailEntry(reserveNomorBooking, reserveNamaBand, reserveTagihan,
                                 reserveStatus, reserveWaktuBooking, reserveTanggal, reserveRefund,
                                 reserveRefundPlace, refundStatus, reserveRoomNama, reserveStudioNama);
+                    }
+                    hideDialog();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    hideDialog();
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_LONG).show();
+                hideDialog();
+            }
+        }) {
+
+            @Override
+            protected Map<String, String> getParams() {
+                // Posting parameters to login url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("reservasi_id", String.valueOf(reservationId));
+
+                return params;
+            }
+        };
+        // Adding request to request queue
+        stringRequest.setTag(tag_string_req);
+        requestQueue.add(stringRequest);
+    }
+
+    private void issuedCancelBookingRequest(final int reservationId) {
+        // Tag used to cancel the request
+        String tag_string_req = "req_cancel_booking_request";
+        StringRequest stringRequest;
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
+        progressDialog.setMessage("Cancel Booking Reservation...");
+        showDialog();
+
+        stringRequest = new StringRequest(Request.Method.POST,
+                NetworkUtils.CANCEL_RESERVATION_CHAMBER_URL, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "History Booking List Response: " + response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String code = jsonObject.getString("code");
+                    String status = jsonObject.getString("status");
+                    if (Integer.parseInt(code) > 0) {
+                        Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show();
                     }
                     hideDialog();
                 } catch (JSONException e) {
