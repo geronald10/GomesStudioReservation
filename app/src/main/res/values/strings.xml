@@ -125,4 +125,6 @@
     <string name="jadwal_label">Jadwal</string>
     <string name="waktu_mulai_label">waktu mulai</string>
     <string name="waktu_selesai_label">waktu selesai</string>
+    <string name="website_label">www.chamber.id</string>
+    <string name="chamber_registration_label">Chamber Registration</string>
 </resources>

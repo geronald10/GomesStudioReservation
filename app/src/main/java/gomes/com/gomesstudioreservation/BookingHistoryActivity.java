@@ -1,11 +1,12 @@
 package gomes.com.gomesstudioreservation;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,7 +33,6 @@ import gomes.com.gomesstudioreservation.data.ReservationSessionManager;
 import gomes.com.gomesstudioreservation.models.HistoryBooking;
 import gomes.com.gomesstudioreservation.utilities.DividerItemDecoration;
 import gomes.com.gomesstudioreservation.utilities.NetworkUtils;
-import gomes.com.gomesstudioreservation.utilities.SearchJadwalJsonUtils;
 
 public class BookingHistoryActivity extends BaseActivity implements
         BookingHistoryAdapter.BookingHistoryAdapterOnClickHandler {
@@ -45,6 +45,7 @@ public class BookingHistoryActivity extends BaseActivity implements
     private List<HistoryBooking> historyBookingList;
 
     private ProgressDialog progressDialog;
+    private SwipeRefreshLayout swipeContainer;
 
     private String userId;
 
@@ -55,9 +56,21 @@ public class BookingHistoryActivity extends BaseActivity implements
         mContext = this;
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         HashMap<String, String> user = session.getUserDetails();
         userId = user.get(ReservationSessionManager.KEY_USER_ID);
+
+        // Lookup the swipe container view
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+               getBookingHistoryList(userId);
+            }
+        });
 
         // Progress Dialog
         progressDialog = new ProgressDialog(this);
@@ -93,6 +106,7 @@ public class BookingHistoryActivity extends BaseActivity implements
             public void onResponse(String response) {
                 Log.d(TAG, "History Booking List Response: " + response);
                 try {
+                    mAdapter.clear();
                     JSONObject jsonObject = new JSONObject(response);
                     int code = jsonObject.getInt("code");
                     String status = jsonObject.getString("status");
@@ -121,6 +135,7 @@ public class BookingHistoryActivity extends BaseActivity implements
                     }
                     mAdapter.notifyDataSetChanged();
                     Toast.makeText(mContext, status, Toast.LENGTH_SHORT).show();
+                    swipeContainer.setRefreshing(false);
                     hideDialog();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -168,5 +183,21 @@ public class BookingHistoryActivity extends BaseActivity implements
         Intent intentToDetail = new Intent(mContext, BookingDetailActivity.class);
         intentToDetail.putExtra("reservasi_id", reservasiId);
         mContext.startActivity(intentToDetail);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(R.string.dialog_message)
+                .setTitle("Exit Application?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        BookingHistoryActivity.super.onBackPressed();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

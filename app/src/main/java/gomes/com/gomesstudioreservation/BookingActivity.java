@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -75,6 +77,8 @@ public class BookingActivity extends BaseActivity {
         setContentView(R.layout.activity_booking);
         mContext = this;
 
+        session.checkLogin();
+
         // Progress Dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
@@ -106,12 +110,17 @@ public class BookingActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btn_search_button:
-                    Intent intent = new Intent(mContext, ManageBookingActivity.class);
-                    intent.putExtra("selected_date", formattedSelectedDate);
-                    intent.putExtra("selected_studio", studioKey);
-                    intent.putExtra("nama_studio", (String) spStudio.getSelectedItem());
-                    intent.putExtra("nama_band", namaBand.getText().toString());
-                    startActivity(intent);
+                    if (namaBand.getText() != null && spStudio.getSelectedItem() != null && spCity != null && tanggalBooking.getText() != null) {
+                        Intent intent = new Intent(mContext, ManageBookingActivity.class);
+                        intent.putExtra("selected_date", formattedSelectedDate);
+                        intent.putExtra("selected_studio", studioKey);
+                        intent.putExtra("nama_studio", (String) spStudio.getSelectedItem());
+                        intent.putExtra("nama_band", namaBand.getText().toString());
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(mContext, "All fields must be filled", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
             }
         }
     };
@@ -123,14 +132,14 @@ public class BookingActivity extends BaseActivity {
                 case R.id.sp_select_town:
                     String cityKey;
                     String cityValue = (String) spCity.getSelectedItem();
-                    for(Map.Entry entry : cityNames.entrySet()){
-                        if(cityValue.equals(entry.getValue())){
+                    for (Map.Entry entry : cityNames.entrySet()) {
+                        if (cityValue.equals(entry.getValue())) {
                             cityKey = (String) entry.getKey();
                             mStudioAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_list_item_1, getStudioSpinnerData(cityKey));
                             mStudioAdapter.notifyDataSetChanged();
                             spStudio.setAdapter(mStudioAdapter);
                             spStudio.setEnabled(true);
-                            if(mStudioAdapter.getCount()==0) {
+                            if (mStudioAdapter.getCount() == 0) {
                                 spStudio.setEnabled(false);
                                 Toast.makeText(mContext, "Studio not found", Toast.LENGTH_SHORT).show();
                             }
@@ -140,8 +149,8 @@ public class BookingActivity extends BaseActivity {
                 case R.id.sp_select_studio:
                     String[] key;
                     String studioValue = (String) spStudio.getSelectedItem();
-                    for(Map.Entry entry : studioNames.entrySet()){
-                        if(studioValue.equals(entry.getValue())){
+                    for (Map.Entry entry : studioNames.entrySet()) {
+                        if (studioValue.equals(entry.getValue())) {
                             key = entry.getKey().toString().split("\\.");
                             studioKey = key[1];
                             Log.d("studio key selected", studioKey);
@@ -207,6 +216,22 @@ public class BookingActivity extends BaseActivity {
         tanggalBooking.setText(savedInstanceState.getString("tanggalBooking"));
     }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setMessage(R.string.dialog_message)
+                .setTitle("Exit Application?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        BookingActivity.super.onBackPressed();
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     // populate city spinner data
     public String[] getCitySpinnerData() {
         Log.d("getCitySpinnerData", "berhasil call");
@@ -245,7 +270,7 @@ public class BookingActivity extends BaseActivity {
         if (cursor.moveToFirst()) {
             do {
                 studioNames.put(cursor.getString(cursor.getColumnIndex(ReservationContract.StudioEntry.COLUMN_STUDIO_FK_CITY_ID)) + "." +
-                        cursor.getString(cursor.getColumnIndex(ReservationContract.StudioEntry.COLUMN_STUDIO_ID)),
+                                cursor.getString(cursor.getColumnIndex(ReservationContract.StudioEntry.COLUMN_STUDIO_ID)),
                         cursor.getString(cursor.getColumnIndex(ReservationContract.StudioEntry.COLUMN_STUDIO_NAMA)));
                 Log.d("studioNames", String.valueOf(studioNames));
             } while (cursor.moveToNext());
@@ -341,9 +366,9 @@ public class BookingActivity extends BaseActivity {
 
             /* Delete old weather data because we don't need to keep multiple data */
             context.getContentResolver().delete(
-            ReservationContract.StudioEntry.CONTENT_URI,
-            null,
-            null);
+                    ReservationContract.StudioEntry.CONTENT_URI,
+                    null,
+                    null);
 
             Log.d("length studio", String.valueOf(inputStudioValues.length));
             // Studio data

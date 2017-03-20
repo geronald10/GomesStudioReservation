@@ -93,6 +93,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+    }
+
     /**
      * function to verify login details in mysql db
      * */
@@ -161,15 +167,15 @@ public class LoginActivity extends AppCompatActivity {
         }) {
 
             @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
-                params.put(ReservationContract.UserEntry.KEY_USER_PASSWORD, password);
+        protected Map<String, String> getParams() {
+            // Posting parameters to login url
+            Map<String, String> params = new HashMap<String, String>();
+            params.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
+            params.put(ReservationContract.UserEntry.KEY_USER_PASSWORD, password);
 
-                return params;
-            }
-        };
+            return params;
+        }
+    };
         // Adding request to request queue
         strReq.setTag(tag_string_req);
         requestQueue.add(strReq);
@@ -186,19 +192,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void addUser(String userId, String username, String email, String noHP) {
-        //        ReservationDBHelper db = new ReservationDBHelper(BookingActivity.this);
         Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
         final ContentValues values = new ContentValues();
-//
-//        AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContentResolver()) {
-//        };
+
         values.put(ReservationContract.UserEntry.KEY_USER_ID, userId);
         values.put(ReservationContract.UserEntry.KEY_USER_NAME, username);
         values.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
         values.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHP);
-//
-//        queryHandler.startInsert(-1, null, mNewUri, values);
-//        Log.d("Insertion from login ", values.toString());
 
         List<ContentValues> userValues = new ArrayList<ContentValues>();
         userValues.add(values);
@@ -207,18 +207,6 @@ public class LoginActivity extends AppCompatActivity {
                 mNewUri,
                 userValues.toArray(new ContentValues[1]));
         Log.d("jumlah data dikirim", String.valueOf(userValues.size()));
-
-//        Uri mNewUri = ReservationContract.UserEntry.CONTENT_URI;
-//        final ContentValues values = new ContentValues();
-//
-//        AsyncQueryHandler queryHandler = new AsyncQueryHandler(getContentResolver()) {
-//        };
-//        values.put(ReservationContract.UserEntry.KEY_USER_NAME, username);
-//        values.put(ReservationContract.UserEntry.KEY_USER_EMAIL, email);
-//        values.put(ReservationContract.UserEntry.KEY_USER_NO_HP, noHP);
-//
-//        queryHandler.startInsert(-1, null, mNewUri, values);
-//        Log.d("Insertion from login ", values.toString());
     }
 }
 

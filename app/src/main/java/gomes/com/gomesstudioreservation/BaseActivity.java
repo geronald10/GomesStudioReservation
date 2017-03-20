@@ -146,6 +146,7 @@ public class BaseActivity extends AppCompatActivity implements
         switch (id)
         {
             case R.id.nav_home:
+
                 startActivity(new Intent(this, BookingActivity.class));
                 finish();
                 return true;

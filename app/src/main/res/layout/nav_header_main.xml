@@ -18,7 +18,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="@drawable/nav_drawer_header"/>
 
     <LinearLayout
         android:layout_width="match_parent"

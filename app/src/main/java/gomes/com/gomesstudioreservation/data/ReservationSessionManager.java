@@ -64,7 +64,6 @@ public class ReservationSessionManager {
         return user;
     }
 
-
     public void logoutUser(){
         // Clearing all data from Shared Preferences
         editor.clear();

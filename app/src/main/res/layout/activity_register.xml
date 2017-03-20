@@ -28,7 +28,17 @@
             android:id="@+id/email_register_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:gravity="center"
+                android:text="@string/chamber_registration_label"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/colorIcons" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -39,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_username"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName" />
 
             </android.support.design.widget.TextInputLayout>
 

@@ -1,7 +1,6 @@
 package gomes.com.gomesstudioreservation;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,32 +107,20 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
             tanggalBooking = (TextView) itemView.findViewById(R.id.tvTanggalBooking);
 
             itemView.setOnClickListener(this);
-//            statusBooked.setOnClickListener(this);
-//            statusConfirmed.setOnClickListener(this);
-//            statusCanceled.setOnClickListener(this);
-//            statusFailed.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mClickHandler.onClick(historyBookingList.get(adapterPosition).getReservasiId());
-//            switch (v.getId()) {
-//                case R.id.btn_status_booked:
-//                    Intent intentToReview = new Intent(mContext, BookingDetailActivity.class);
-//                    intentToReview.putExtra("reservasi_id", historyBookingList.get(adapterPosition).getReservasiId());
-//                    mContext.startActivity(intentToReview);
-//                    break;
-//                case R.id.btn_status_confirmed:
-//                    Intent intentToDetail = new Intent(mContext, BookingDetailActivity.class);
-//                    intentToDetail.putExtra("reservasi_id", historyBookingList.get(adapterPosition).getReservasiId());
-//                    mContext.startActivity(intentToDetail);
-//                    break;
-//                case R.id.btn_status_canceled:
-//                    break;
-//                case R.id.btn_status_failed:
-//                    break;
-//            }
         }
+
+    }
+
+    /* Within the RecyclerView.Adapter class */
+    // Clean all elements of the recycler
+    public void clear() {
+        historyBookingList.clear();
+        notifyDataSetChanged();
     }
 }

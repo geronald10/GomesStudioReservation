@@ -10,14 +10,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarUtils;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -100,7 +103,13 @@ public class BasicCalendar extends AppCompatActivity implements OnDateSelectedLi
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        selectedDate.setText(getSelectedDateString());
+        if(!isPastDay(date)) {
+            selectedDate.setText(getSelectedDateString());
+        } else {
+            calendar.setSelectedDate(CalendarDay.today());
+            selectedDate.setText("No Selection");
+            Toast.makeText(this, "Can't select the past day", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private String getSelectedDateString() {
@@ -125,5 +134,24 @@ public class BasicCalendar extends AppCompatActivity implements OnDateSelectedLi
         data.putExtra("dateToSend", getSelectedDateServerFormat());
         setResult(Activity.RESULT_OK, data);
         finish();
+    }
+
+    private boolean isPastDay(CalendarDay date) {
+        Calendar c = Calendar.getInstance();
+
+        // set the calendar to start of today
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        // and get that as a Date
+        CalendarDay today = CalendarDay.from(c.getTime());
+
+        // test your condition, if Date specified is before today
+        if (date.isBefore(today)) {
+            return true;
+        }
+        return false;
     }
 }
