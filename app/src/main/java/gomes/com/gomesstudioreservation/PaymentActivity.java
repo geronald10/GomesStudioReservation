@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +53,9 @@ public class PaymentActivity extends AppCompatActivity {
 
         getPaymentInfo(String.valueOf(reservasiId));
         tvLimitPaymentTime.setText(reservasiBatas);
+
+        // Set up action bar.
+        setupToolbar();
     }
 
     private void getPaymentInfo(final String reservasiId) {
@@ -133,5 +137,14 @@ public class PaymentActivity extends AppCompatActivity {
     private void hideDialog() {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        TextView textToolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        textToolbarTitle.setText(R.string.payment_info);
     }
 }

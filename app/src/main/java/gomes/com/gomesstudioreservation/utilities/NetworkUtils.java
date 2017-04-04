@@ -5,7 +5,6 @@ package gomes.com.gomesstudioreservation.utilities;
  */
 public final class NetworkUtils {
 
-    private static final String TAG = NetworkUtils.class.getSimpleName();
     // Registration API
     public static final String REGISTER_CHAMBER_URL =
             "http://128.199.139.178/reservasistudio/public/index.php/u/register";
@@ -24,9 +23,6 @@ public final class NetworkUtils {
     // History Reservasi
     public static final String HISTORY_RESERVATION_CHAMBER_URL =
             "http://128.199.139.178/reservasistudio/public/index.php/r/history";
-    // Confirm Reservasi
-    public static final String CONFIRM_RESERVATION_CHAMBER_URL =
-            "http://128.199.139.178/reservasistudio/public/index.php/r/issue";
     // Cancel Reservasi
     public static final String CANCEL_RESERVATION_CHAMBER_URL =
             "http://128.199.139.178/reservasistudio/public/index.php/r/cancel";

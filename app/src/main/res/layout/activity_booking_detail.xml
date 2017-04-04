@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                android:text="Kenanga"
+                android:text="-"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toRightOf="@+id/tvRoomNameLabel"
                 app:layout_constraintRight_toRightOf="parent"
@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Moday, 26 February 2017"
+                android:text="-"
                 app:layout_constraintLeft_toLeftOf="@+id/tvRoomNameLabel"
                 app:layout_constraintTop_toBottomOf="@+id/tvRoomNameLabel" />
 
@@ -152,19 +152,32 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Several"
+                android:text="-"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toRightOf="@+id/tvNamaBandLabel"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvBookingDetailsLabel" />
 
             <TextView
-                android:id="@+id/tvWaktuBooking"
+                android:id="@+id/tvWaktuBookingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Waktu Booking : "
                 app:layout_constraintLeft_toLeftOf="@+id/tvNamaBandLabel"
+                app:layout_constraintTop_toBottomOf="@+id/tvNamaBand" />
+
+            <TextView
+                android:id="@+id/tvWaktuBooking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="8dp"
+                android:text="-"
+                app:layout_constraintLeft_toRightOf="@+id/tvWaktuBookingLabel"
                 app:layout_constraintTop_toBottomOf="@+id/tvNamaBand" />
 
             <ImageView
@@ -200,7 +213,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="8dp"
-                android:text="Rp. 125.000,00"
+                android:text="Rp. -"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 android:textColor="@color/colorIcons"
                 android:textSize="20sp"

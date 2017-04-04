@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -70,6 +71,11 @@ public class EditBookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_booking);
         mContext = this;
+
+        // Set up action bar.
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setTitle("Booking Detail");
 
         bandName = (EditText) findViewById(R.id.edt_editted_band_name);
         studioName = (TextView) findViewById(R.id.tv_studio_name);
@@ -318,7 +324,7 @@ public class EditBookingActivity extends AppCompatActivity {
     public void removeFromList(int jadwalId) {
         newCheckedList.remove(Integer.valueOf(jadwalId));
         for (int i = 0; i < newCheckedList.size(); i++) {
-            Log.d("list setelah remove", String.valueOf(jadwalId));
+            Log.d("list setelah remove", String.valueOf(newCheckedList.size() ));
         }
     }
 }

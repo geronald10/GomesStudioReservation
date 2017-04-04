@@ -169,6 +169,7 @@ public class BaseActivity extends AppCompatActivity implements
             case R.id.action_logout:
                 Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
                 logoutUser();
+                finish();
                 return true;
         }
 

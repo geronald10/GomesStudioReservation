@@ -31,7 +31,8 @@
         app:layout_constraintTop_toTopOf="@+id/tvKodeBooking"
         android:layout_marginEnd="16dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="16dp" />
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="0dp" />
 
     <TextView
         android:id="@+id/tvBandNameLabel"
@@ -63,9 +64,9 @@
 
     <TextView
         android:id="@+id/tvBandName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginStart="24dp"
         android:text="Javanoa"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -73,31 +74,39 @@
         app:layout_constraintBottom_toBottomOf="@+id/tvBandNameLabel"
         app:layout_constraintLeft_toRightOf="@+id/tvKodeBooking"
         app:layout_constraintTop_toTopOf="@+id/tvBandNameLabel"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintRight_toLeftOf="@+id/btn_status_canceled"
+        android:layout_marginRight="16dp"
+        app:layout_constraintHorizontal_bias="1.0" />
 
     <TextView
         android:id="@+id/tvStudioNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="@string/studio_name_label"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="16sp"
         app:layout_constraintLeft_toLeftOf="@+id/tvBandNameLabel"
-        app:layout_constraintTop_toBottomOf="@+id/tvBandNameLabel" />
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvBandName" />
 
     <TextView
         android:id="@+id/tvStudioName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="0dp"
         android:text="Several"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvStudioNameLabel"
+        android:layout_marginRight="0dp"
+        app:layout_constraintRight_toRightOf="@+id/tvBandName"
+        android:layout_marginLeft="0dp"
         app:layout_constraintLeft_toLeftOf="@+id/tvBandName"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintTop_toTopOf="@+id/tvStudioNameLabel"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginTop="0dp" />
 
     <TextView
         android:id="@+id/tvSeparator3"

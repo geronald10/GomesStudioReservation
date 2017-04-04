@@ -127,4 +127,5 @@
     <string name="waktu_selesai_label">waktu selesai</string>
     <string name="website_label">www.chamber.id</string>
     <string name="chamber_registration_label">Chamber Registration</string>
+    <string name="payment_info">Payment Info</string>
 </resources>

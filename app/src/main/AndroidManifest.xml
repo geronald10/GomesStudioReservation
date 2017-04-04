@@ -18,8 +18,8 @@
         <activity
             android:name=".SplashScreenActivity"
             android:label="@string/app_name"
-            android:theme="@style/WelcomeScreen"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/WelcomeScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -32,14 +32,14 @@
         <activity
             android:name=".LoginActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/WelcomeScreen"
             android:label="@string/title_activity_login"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:theme="@style/WelcomeScreen" />
         <activity
             android:name=".RegisterActivity"
             android:excludeFromRecents="true"
-            android:theme="@style/WelcomeScreen"
-            android:label="@string/title_activity_register" />
+            android:label="@string/title_activity_register"
+            android:theme="@style/WelcomeScreen" />
         <activity
             android:name=".BookingActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -47,8 +47,12 @@
         <activity
             android:name=".ManageBookingActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BookingReviewActivity" />
-        <activity android:name=".PaymentActivity" />
+        <activity
+            android:name=".BookingReviewActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PaymentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".BookingHistoryActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -65,7 +69,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AboutUsActivity" />
         <activity android:name=".PrivacyPolicyActivity" />
-        <activity android:name=".BookingDetailActivity" />
+        <activity
+            android:name=".BookingDetailActivity"
+            android:noHistory="true"
+            android:parentActivityName=".BookingHistoryActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BookingHistoryActivity" />
+        </activity>
 
         <provider
             android:name=".data.ReservationProvider"
@@ -73,7 +84,14 @@
             android:exported="false"
             android:multiprocess="true" />
 
-        <activity android:name=".EditBookingActivity" />
+        <activity
+            android:name=".EditBookingActivity"
+            android:noHistory="true"
+            android:parentActivityName=".BookingDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".BookingDetailActivity" />
+        </activity>
     </application>
 
 </manifest>

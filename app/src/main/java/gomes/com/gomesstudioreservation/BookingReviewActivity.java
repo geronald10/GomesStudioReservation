@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -87,6 +88,9 @@ public class BookingReviewActivity extends AppCompatActivity {
         tvTotalPayment.setText(totalTagihan);
 
         btnContinue.setOnClickListener(operasi);
+
+        // Set up action bar.
+        setupToolbar();
     }
 
     View.OnClickListener operasi = new View.OnClickListener() {
@@ -205,5 +209,14 @@ public class BookingReviewActivity extends AppCompatActivity {
     private void hideDialog() {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        TextView textToolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
+        textToolbarTitle.setText(R.string.manage_booking_label);
     }
 }
