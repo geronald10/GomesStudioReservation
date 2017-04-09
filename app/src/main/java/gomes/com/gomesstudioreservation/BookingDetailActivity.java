@@ -57,6 +57,8 @@ public class BookingDetailActivity extends AppCompatActivity {
     private TextView tvTotalRefund;
     private TextView tvRoomNama;
     private TextView tvStudioNama;
+    private TextView tvBatasPembayaran;
+    private TextView tvJadwalReservasi;
 
     private int reservationId;
     private String reserveNomorBooking;
@@ -67,10 +69,11 @@ public class BookingDetailActivity extends AppCompatActivity {
     private String reserveTanggal;
     private String reserveBatas;
     private String reserveRefund;
-    private String reserveRefundPlace;
+    private String reserveRefundAt;
     private String refundStatus;
     private String reserveRoomNama;
     private String reserveStudioNama;
+    private String reserveJadwal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +92,20 @@ public class BookingDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         reservationId = intent.getIntExtra("reservasi_id", 0);
-        Log.d("cek reservasiID", String.valueOf(reservationId));
+        reserveNomorBooking = intent.getStringExtra("reservasi_nomor_booking");
+        reserveNamaBand = intent.getStringExtra("reservasi_nama_band");
+        reserveTagihan = intent.getStringExtra("reservasi_tagihan");
+        reserveStatus = intent.getStringExtra("reservasi_status");
+        reserveWaktuBooking = intent.getStringExtra("reservasi_waktu_booking");
+        reserveTanggal = intent.getStringExtra("reservasi_tanggal");
+        reserveBatas = intent.getStringExtra("reservasi_batas");
+        reserveRefund = intent.getStringExtra("reservasi_refund");
+        reserveRefundAt = intent.getStringExtra("refunded_at");
+        refundStatus = intent.getStringExtra("refund_status");
+        reserveRoomNama = intent.getStringExtra("room_nama");
+        reserveStudioNama = intent.getStringExtra("studio_nama");
+        reserveBatas = intent.getStringExtra("reservasi_batas");
+        reserveJadwal = intent.getStringExtra("jadwal");
 
         tvNomorBooking = (TextView)findViewById(R.id.tvKodeBooking);
         tvNamaBand = (TextView)findViewById(R.id.tvNamaBand);
@@ -101,6 +117,8 @@ public class BookingDetailActivity extends AppCompatActivity {
         tvRefundAt = (TextView)findViewById(R.id.tvRefundAt);
         tvRoomNama = (TextView)findViewById(R.id.tvRoomName);
         tvStudioNama = (TextView)findViewById(R.id.tvStudioName);
+        tvBatasPembayaran = (TextView)findViewById(R.id.tvBatasBayar);
+        tvJadwalReservasi = (TextView)findViewById(R.id.tvJadwalReservasi);
 
         ivStatusReservasi = (ImageView)findViewById(R.id.iv_status);
         tvStatusReservasi = (TextView)findViewById(R.id.tv_status);
@@ -114,7 +132,11 @@ public class BookingDetailActivity extends AppCompatActivity {
         btnContinueToPayment.setOnClickListener(operate);
         btnContinueToEditReservation.setOnClickListener(operate);
         btnRequestCancelBooking.setOnClickListener(operate);
-        getBookingDetail(reservationId);
+
+        loadBookingDetailEntry(reserveNomorBooking, reserveNamaBand, reserveTagihan,
+                reserveStatus, reserveWaktuBooking, reserveTanggal, reserveRefund,
+                reserveRefundAt, refundStatus, reserveRoomNama, reserveStudioNama,
+                reserveJadwal, reserveBatas);
     }
 
     View.OnClickListener operate = new View.OnClickListener() {
@@ -156,7 +178,8 @@ public class BookingDetailActivity extends AppCompatActivity {
 
     private void loadBookingDetailEntry(String nomorBooking, String namaBand, String tagihan,
                                         String status, String waktuBooking, String tanggal, String totalRefund,
-                                        String refundAt, String refundStatus, String roomNama, String studioNama) {
+                                        String refundAt, String refundStatus, String roomNama, String studioNama,
+                                        String jadwalReservasi, String batasPembayaran) {
 
         btnContinueToPayment.setVisibility(View.INVISIBLE);
         btnContinueToEditReservation.setVisibility(View.INVISIBLE);
@@ -171,6 +194,8 @@ public class BookingDetailActivity extends AppCompatActivity {
         tvTanggal.setText(tanggal);
         tvRoomNama.setText(roomNama);
         tvStudioNama.setText(studioNama);
+        tvJadwalReservasi.setText(jadwalReservasi);
+        tvBatasPembayaran.setText(batasPembayaran);
         if(refundStatus == null) {
             tvRefundStatus.setText("-");
         }
@@ -200,75 +225,6 @@ public class BookingDetailActivity extends AppCompatActivity {
                 tvStatusReservasi.setText(getResources().getString(R.string.failed_status));
                 break;
         }
-    }
-
-    private void getBookingDetail(final int reservationId) {
-        // Tag used to cancel the request
-        String tag_string_req = "req_booking_history_list";
-        StringRequest stringRequest;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-
-        progressDialog.setMessage("Fetch Booking Data Detail ...");
-        showDialog();
-
-        stringRequest = new StringRequest(Request.Method.POST,
-                NetworkUtils.GET_USER_RESERVATION_DATA_DETAIL, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-                Log.d(TAG, "History Booking List Response: " + response);
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    String code = jsonObject.getString("code");
-                    JSONObject reservasi = jsonObject.getJSONObject("reservasi");
-                    if (Integer.parseInt(code) > 0) {
-                        reserveNomorBooking = reservasi.getString("reservasi_nomor_booking");
-                        reserveNamaBand = reservasi.getString("reservasi_nama_band");
-                        reserveTagihan = reservasi.getString("reservasi_tagihan");
-                        reserveStatus = reservasi.getString("reservasi_status");
-                        reserveWaktuBooking = reservasi.getString("reservasi_waktu_booking");
-                        reserveTanggal = reservasi.getString("reservasi_tanggal");
-                        reserveBatas = reservasi.getString("reservasi_batas");
-                        reserveRefund = reservasi.getString("reservasi_refund");
-                        reserveRefundPlace = reservasi.getString("refunded_at");
-                        refundStatus = reservasi.getString("refund_status");
-                        reserveRoomNama = reservasi.getString("room_nama");
-                        reserveStudioNama = reservasi.getString("studio_nama");
-                        Toast.makeText(mContext, "load detail jadwal success", Toast.LENGTH_SHORT).show();
-                        loadBookingDetailEntry(reserveNomorBooking, reserveNamaBand, reserveTagihan,
-                                reserveStatus, reserveWaktuBooking, reserveTanggal, reserveRefund,
-                                reserveRefundPlace, refundStatus, reserveRoomNama, reserveStudioNama);
-                    }
-                    hideDialog();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Json error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    hideDialog();
-                }
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                hideDialog();
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("reservasi_id", String.valueOf(reservationId));
-
-                return params;
-            }
-        };
-        // Adding request to request queue
-        stringRequest.setTag(tag_string_req);
-        requestQueue.add(stringRequest);
     }
 
     private void issuedCancelBookingRequest(final int reservationId) {

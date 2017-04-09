@@ -128,4 +128,7 @@
     <string name="website_label">www.chamber.id</string>
     <string name="chamber_registration_label">Chamber Registration</string>
     <string name="payment_info">Payment Info</string>
+    <string name="jadwal_reservasi_label">Jadwal Reservasi</string>
+    <string name="batas_pembayaran_label">Batas Pembayaran</string>
+    <string name="waktu_booking_label">Waktu Booking :</string>
 </resources>

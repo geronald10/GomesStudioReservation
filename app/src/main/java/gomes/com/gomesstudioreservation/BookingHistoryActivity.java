@@ -68,7 +68,7 @@ public class BookingHistoryActivity extends BaseActivity implements
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-               getBookingHistoryList(userId);
+                getBookingHistoryList(userId);
             }
         });
 
@@ -126,7 +126,10 @@ public class BookingHistoryActivity extends BaseActivity implements
                                             history.getString("reservasi_status"),
                                             history.getString("reservasi_waktu_booking"),
                                             history.getString("reservasi_tanggal"),
+                                            history.getString("reservasi_batas"),
                                             history.getString("reservasi_refund"),
+                                            history.getString("refunded_at"),
+                                            history.getString("refund_status"),
                                             history.getString("room_nama"),
                                             history.getString("studio_nama"),
                                             history.getString("jadwal"));
@@ -179,9 +182,25 @@ public class BookingHistoryActivity extends BaseActivity implements
     }
 
     @Override
-    public void onClick(int reservasiId) {
+    public void onClick(int reservasiId, String nomorBooking, String namaBand, String tagihan,
+                        String status, String waktuBooking, String reserveTanggal, String reserveBatas,
+                        String reservasiRefund, String refundAt, String refundStatus, String roomNama,
+                        String studioNama, String jadwal) {
         Intent intentToDetail = new Intent(mContext, BookingDetailActivity.class);
         intentToDetail.putExtra("reservasi_id", reservasiId);
+        intentToDetail.putExtra("reservasi_nomor_booking", nomorBooking);
+        intentToDetail.putExtra("reservasi_nama_band", namaBand);
+        intentToDetail.putExtra("reservasi_tagihan", tagihan);
+        intentToDetail.putExtra("reservasi_status", status);
+        intentToDetail.putExtra("reservasi_waktu_booking", waktuBooking);
+        intentToDetail.putExtra("reservasi_tanggal", reserveTanggal);
+        intentToDetail.putExtra("reservasi_batas", reserveBatas);
+        intentToDetail.putExtra("reservasi_refund", reservasiRefund);
+        intentToDetail.putExtra("refunded_at", refundAt);
+        intentToDetail.putExtra("refund_status", refundStatus);
+        intentToDetail.putExtra("room_nama", roomNama);
+        intentToDetail.putExtra("studio_nama", studioNama);
+        intentToDetail.putExtra("jadwal", jadwal);
         mContext.startActivity(intentToDetail);
     }
 

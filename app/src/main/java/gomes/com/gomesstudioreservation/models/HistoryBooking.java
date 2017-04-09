@@ -12,8 +12,11 @@ public class HistoryBooking implements Serializable {
     private String tagihan;
     private String status;
     private String waktuBooking;
-    private String tanggalBooking;
+    private String reserveTanggal;
+    private String reserveBatas;
     private String reservasiRefund;
+    private String refundAt;
+    private String refundStatus;
     private String roomNama;
     private String studioNama;
     private String jadwal;
@@ -24,8 +27,9 @@ public class HistoryBooking implements Serializable {
 
     public HistoryBooking(int reservasiId, int studioId, int roomId, String nomorBooking,
                           String namaBand, String tagihan, String status, String waktuBooking,
-                          String tanggalBooking, String reservasiRefund, String roomNama,
-                          String studioNama, String jadwal) {
+                          String reserveTanggal, String reserveBatas, String reservasiRefund,
+                          String refundAt, String refundStatus, String roomNama, String studioNama,
+                          String jadwal) {
         this.reservasiId = reservasiId;
         this.studioId = studioId;
         this.roomId = roomId;
@@ -34,11 +38,46 @@ public class HistoryBooking implements Serializable {
         this.tagihan = tagihan;
         this.status = status;
         this.waktuBooking = waktuBooking;
-        this.tanggalBooking = tanggalBooking;
+        this.reserveTanggal = reserveTanggal;
+        this.reserveBatas = reserveBatas;
         this.reservasiRefund = reservasiRefund;
+        this.refundAt = refundAt;
+        this.refundStatus = refundStatus;
         this.roomNama = roomNama;
         this.studioNama = studioNama;
         this.jadwal = jadwal;
+    }
+
+    public String getReserveTanggal() {
+        return reserveTanggal;
+    }
+
+    public void setReserveTanggal(String reserveTanggal) {
+        this.reserveTanggal = reserveTanggal;
+    }
+
+    public String getReserveBatas() {
+        return reserveBatas;
+    }
+
+    public void setReserveBatas(String reserveBatas) {
+        this.reserveBatas = reserveBatas;
+    }
+
+    public String getRefundAt() {
+        return refundAt;
+    }
+
+    public void setRefundAt(String refundAt) {
+        this.refundAt = refundAt;
+    }
+
+    public String getRefundStatus() {
+        return refundStatus;
+    }
+
+    public void setRefundStatus(String refundStatus) {
+        this.refundStatus = refundStatus;
     }
 
     public int getReservasiId() {
@@ -103,14 +142,6 @@ public class HistoryBooking implements Serializable {
 
     public void setWaktuBooking(String waktuBooking) {
         this.waktuBooking = waktuBooking;
-    }
-
-    public String getTanggalBooking() {
-        return tanggalBooking;
-    }
-
-    public void setTanggalBooking(String tanggalBooking) {
-        this.tanggalBooking = tanggalBooking;
     }
 
     public String getReservasiRefund() {

@@ -18,7 +18,10 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
     final private BookingHistoryAdapterOnClickHandler mClickHandler;
 
     public interface BookingHistoryAdapterOnClickHandler {
-        void onClick(int reservasiId);
+        void onClick(int reservasiId, String nomorBooking, String namaBand, String tagihan,
+                     String status, String waktuBooking, String reserveTanggal, String reserveBatas,
+                     String reservasiRefund, String refundAt, String refundStatus, String roomNama,
+                     String studioNama, String jadwal);
     }
 
     private Context mContext;
@@ -47,7 +50,7 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         holder.bandName.setText(historyBookingList.get(position).getNamaBand());
         holder.studioName.setText(historyBookingList.get(position).getStudioNama());
         holder.tagihan.setText(formatter.toRupiahFormat(historyBookingList.get(position).getTagihan()));
-        holder.tanggalBooking.setText(historyBookingList.get(position).getTanggalBooking());
+        holder.tanggalBooking.setText(historyBookingList.get(position).getReserveTanggal());
         switch(historyBookingList.get(position).getStatus()) {
             case "0":
                 holder.statusBooked.setVisibility(View.VISIBLE);
@@ -112,7 +115,20 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mClickHandler.onClick(historyBookingList.get(adapterPosition).getReservasiId());
+            mClickHandler.onClick(historyBookingList.get(adapterPosition).getReservasiId(),
+                    historyBookingList.get(adapterPosition).getNomorBooking(),
+                    historyBookingList.get(adapterPosition).getNamaBand(),
+                    historyBookingList.get(adapterPosition).getTagihan(),
+                    historyBookingList.get(adapterPosition).getStatus(),
+                    historyBookingList.get(adapterPosition).getWaktuBooking(),
+                    historyBookingList.get(adapterPosition).getReserveTanggal(),
+                    historyBookingList.get(adapterPosition).getReserveBatas(),
+                    historyBookingList.get(adapterPosition).getReservasiRefund(),
+                    historyBookingList.get(adapterPosition).getRefundAt(),
+                    historyBookingList.get(adapterPosition).getRefundStatus(),
+                    historyBookingList.get(adapterPosition).getRoomNama(),
+                    historyBookingList.get(adapterPosition).getStudioNama(),
+                    historyBookingList.get(adapterPosition).getJadwal());
         }
 
     }
