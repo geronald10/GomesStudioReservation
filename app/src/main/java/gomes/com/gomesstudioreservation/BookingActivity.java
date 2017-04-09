@@ -351,7 +351,7 @@ public class BookingActivity extends BaseActivity {
             // Studio data
             Collections.addAll(cityValues, inputCityValues);
 
-            /* Insert our new weather data into Studio ContentProvider */
+            /* Insert our new studio data into Studio ContentProvider */
             context.getContentResolver().bulkInsert(
                     ReservationContract.CityEntry.CONTENT_URI,
                     cityValues.toArray(new ContentValues[inputCityValues.length])
@@ -364,7 +364,7 @@ public class BookingActivity extends BaseActivity {
         if (inputStudioValues != null && inputStudioValues.length != 0) {
             List<ContentValues> studioValues = new ArrayList<ContentValues>();
 
-            /* Delete old weather data because we don't need to keep multiple data */
+            /* Delete old studio data */
             context.getContentResolver().delete(
                     ReservationContract.StudioEntry.CONTENT_URI,
                     null,
@@ -374,7 +374,7 @@ public class BookingActivity extends BaseActivity {
             // Studio data
             Collections.addAll(studioValues, inputStudioValues);
 
-            /* Insert our new weather data into Studio ContentProvider */
+            /* Insert our new studio data into Studio ContentProvider */
             context.getContentResolver().bulkInsert(
                     ReservationContract.StudioEntry.CONTENT_URI,
                     studioValues.toArray(new ContentValues[inputStudioValues.length])

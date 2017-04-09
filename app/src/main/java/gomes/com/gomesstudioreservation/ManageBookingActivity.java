@@ -61,9 +61,6 @@ public class ManageBookingActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ReservationSessionManager session;
 
-    ScheduleSectionsPagerAdapter mScheduleSectionsPagerAdapter;
-    // RoomSectionsPagerAdapter mRoomSectionsPagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

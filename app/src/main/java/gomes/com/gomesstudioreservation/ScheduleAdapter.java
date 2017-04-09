@@ -103,7 +103,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         TextView scheduleStudioEndTime;
         TextView scheduleStudioHarga;
         CheckBox checkBoxSelected;
-        Schedule singleSchedule;
 
         ScheduleAdapterViewHolder(View view) {
             super(view);

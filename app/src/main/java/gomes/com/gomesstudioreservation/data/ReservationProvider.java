@@ -204,54 +204,6 @@ public class ReservationProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues contentValues) {
-////        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
-////
-////        switch (cUriMatcher.match(uri)) {
-////            case CODE_USER:
-////                db.beginTransaction();
-////                try {
-////                    long id = db.insert(
-////                            ReservationContract.UserEntry.TABLE_NAME,
-////                            null,
-////                            contentValues);
-////                    if (id > 0) {
-////                        Uri returnUri = ContentUris.withAppendedId(ReservationContract.UserEntry.CONTENT_URI, id);
-////                        getContext().getContentResolver().notifyChange(returnUri, null);
-////                        Log.d("From Provider", String.valueOf(returnUri));
-////                        Log.d("From Provider", "insert jadwal berhasil");
-////                        return returnUri;
-////                    }
-////                    db.setTransactionSuccessful();
-////                } finally {
-////                    db.endTransaction();
-////                    db.close();
-////                }
-////                throw new SQLException("Error inserting into table: " + ReservationContract.UserEntry.TABLE_NAME);
-////
-////            case CODE_JADWAL:
-////                db.beginTransaction();
-////                try {
-////                    long id = db.insert(
-////                            ReservationContract.JadwalEntry.TABLE_NAME,
-////                            null,
-////                            contentValues);
-////                    if (id > 0) {
-////                        Uri returnUri = ContentUris.withAppendedId(ReservationContract.JadwalEntry.CONTENT_URI, id);
-////                        getContext().getContentResolver().notifyChange(returnUri, null);
-////                        Log.d("From Provider", String.valueOf(returnUri));
-////                        Log.d("From Provider", "insert user berhasil");
-////                        return returnUri;
-////                    }
-////                    db.setTransactionSuccessful();
-////                } finally {
-////                    db.endTransaction();
-////                    db.close();
-////                }
-////                throw new SQLException("Error inserting into table: " + ReservationContract.JadwalEntry.TABLE_NAME);
-////
-////            default:
-////                throw new UnsupportedOperationException("Unknown uri: " + uri);
-//        }
         return null;
     }
 

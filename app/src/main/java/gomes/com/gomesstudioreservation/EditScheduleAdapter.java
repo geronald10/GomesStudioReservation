@@ -93,8 +93,6 @@ public class EditScheduleAdapter extends RecyclerView.Adapter<EditScheduleAdapte
             scheduleStudioStartTime = (TextView) itemView.findViewById(R.id.tv_waktu_mulai);
             scheduleStudioEndTime = (TextView) itemView.findViewById(R.id.tv_waktu_selesai);
             checkBoxSelected = (CheckBox) itemView.findViewById(R.id.cb_select_jadwal);
-
-//            itemView.setOnClickListener(this);
         }
     }
 }

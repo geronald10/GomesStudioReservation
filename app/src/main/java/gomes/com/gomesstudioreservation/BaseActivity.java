@@ -29,7 +29,6 @@ public class BaseActivity extends AppCompatActivity implements
     private Toolbar toolbar;
     private View navHeader;
     private ActionBarDrawerToggle drawerToggle;
-    private int selectedNavItemId;
 
     public ReservationSessionManager session;
 
@@ -129,8 +128,6 @@ public class BaseActivity extends AppCompatActivity implements
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         fullLayout.closeDrawer(GravityCompat.START);
-        selectedNavItemId = menuItem.getItemId();
-
         return onOptionsItemSelected(menuItem);
     }
 
