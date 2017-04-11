@@ -87,6 +87,9 @@
     <string name="dialog_message">Are you sure that you want to submit your reservation data?</string>
     <string name="dialog_title">Confirmation</string>
 
+    <string name="dialog_select_schedule">Are you sure to submit your selected schedule?</string>
+    <string name="dialog_select_schedule_title">Confirmation</string>
+
     <string name="dialog_cancel_booking_message">Are you sure that you want to cancel your reservation data?</string>
     <string name="dialog_cancel_booking_title">Are you sure?</string>
 
@@ -131,4 +134,6 @@
     <string name="jadwal_reservasi_label">Jadwal Reservasi</string>
     <string name="batas_pembayaran_label">Batas Pembayaran</string>
     <string name="waktu_booking_label">Waktu Booking :</string>
+    <string name="btn_cancel_booking_label">Cancel Booking</string>
+    <string name="close_label">Close</string>
 </resources>

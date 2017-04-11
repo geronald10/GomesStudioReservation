@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +58,14 @@ public class PaymentActivity extends AppCompatActivity {
 
         // Set up action bar.
         setupToolbar();
+
+        Button btnClose = (Button) findViewById(R.id.btn_close_payment);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void getPaymentInfo(final String reservasiId) {
@@ -146,5 +156,10 @@ public class PaymentActivity extends AppCompatActivity {
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         TextView textToolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         textToolbarTitle.setText(R.string.payment_info);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

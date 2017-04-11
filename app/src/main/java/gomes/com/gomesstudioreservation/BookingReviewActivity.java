@@ -79,6 +79,7 @@ public class BookingReviewActivity extends AppCompatActivity {
         TextView tvRoom = (TextView) findViewById(R.id.tv_room);
         TextView tvTotalPayment = (TextView) findViewById(R.id.tv_total_payment);
         Button btnContinue = (Button) findViewById(R.id.btn_continue_to_payment);
+        Button btnCancel = (Button) findViewById(R.id.btn_cancel_booking);
 
         tvBandName.setText(bandName);
         tvStudioName.setText(studioName);
@@ -88,9 +89,31 @@ public class BookingReviewActivity extends AppCompatActivity {
         tvTotalPayment.setText(totalTagihan);
 
         btnContinue.setOnClickListener(operasi);
+        btnCancel.setOnClickListener(operasi);
 
         // Set up action bar.
         setupToolbar();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder cancellationBuilder = new AlertDialog.Builder(mContext);
+        cancellationBuilder.setMessage(R.string.dialog_cancel_booking_message)
+                .setTitle(R.string.dialog_cancel_booking_title);
+        cancellationBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                finish();
+            }
+        });
+        cancellationBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                dialog.dismiss();
+            }
+        });
+        AlertDialog cancellationDialog = cancellationBuilder.create();
+        cancellationDialog.show();
     }
 
     View.OnClickListener operasi = new View.OnClickListener() {
@@ -115,6 +138,26 @@ public class BookingReviewActivity extends AppCompatActivity {
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();
+                    break;
+                case R.id.btn_cancel_booking:
+                    AlertDialog.Builder cancellationBuilder = new AlertDialog.Builder(mContext);
+                    cancellationBuilder.setMessage(R.string.dialog_cancel_booking_message)
+                            .setTitle(R.string.dialog_cancel_booking_title);
+                    cancellationBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK button
+                            finish();
+                        }
+                    });
+                    cancellationBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog cancellationDialog = cancellationBuilder.create();
+                    cancellationDialog.show();
+                    break;
             }
         }
     };
@@ -159,7 +202,6 @@ public class BookingReviewActivity extends AppCompatActivity {
                         intentToPayment.putExtra("reservasi_batas", reservasiBatas);
                         startActivity(intentToPayment);
                         finish();
-
                     } else {
                         // Error in sending data. Get the error message
                         Toast.makeText(getApplicationContext(),

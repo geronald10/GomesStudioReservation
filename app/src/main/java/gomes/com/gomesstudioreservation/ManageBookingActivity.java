@@ -3,6 +3,7 @@ package gomes.com.gomesstudioreservation;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -95,39 +97,60 @@ public class ManageBookingActivity extends AppCompatActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.btn_booking_button:
-                    Log.d("checkedList size", String.valueOf(checkedScheduleList.size()));
-                    String selectedDate = checkedScheduleList.get(0).getTanggal();
-                    String selectedRoom = checkedScheduleList.get(0).getRoomId();
-                    int totalHarga = 0;
-                    String selectedHour = "";
-                    String selectedJadwal = "";
-
-                    for (int i = 0; i < checkedScheduleList.size(); i++) {
-                        Schedule singleSchedule = checkedScheduleList.get(i);
-                        if (singleSchedule.isSelected()) {
-                            selectedJadwal += singleSchedule.getJadwalId();
-                            selectedHour += i+1 + ". " + singleSchedule.getJadwalStart() + " - " + singleSchedule.getJadwalEnd();
-                            if(i != checkedScheduleList.size()-1) {
-                                selectedJadwal += ",";
-                                selectedHour += "\n";
-                            }
-                            String selectedHarga = singleSchedule.getHarga();
-                            totalHarga = totalHarga + Integer.parseInt(selectedHarga.trim());
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setMessage(R.string.dialog_select_schedule)
+                            .setTitle(R.string.dialog_select_schedule_title);
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User clicked OK button
+                            getCheckedSchedule();
+                            finish();
                         }
-                    }
-
-                    Intent intentToBookingReview = new Intent(ManageBookingActivity.this, BookingReviewActivity.class);
-                    intentToBookingReview.putExtra("studioName", namaStudio);
-                    intentToBookingReview.putExtra("bandName", namaBand);
-                    intentToBookingReview.putExtra("jadwal_id", selectedJadwal);
-                    intentToBookingReview.putExtra("selected_date", selectedDate);
-                    intentToBookingReview.putExtra("selected_hour", selectedHour);
-                    intentToBookingReview.putExtra("selected_room", selectedRoom);
-                    intentToBookingReview.putExtra("tagihan", totalHarga);
-                    startActivity(intentToBookingReview);
+                    });
+                    builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
             }
         }
     };
+
+    private void getCheckedSchedule() {
+        Log.d("checkedList size", String.valueOf(checkedScheduleList.size()));
+        String selectedDate = checkedScheduleList.get(0).getTanggal();
+        String selectedRoom = checkedScheduleList.get(0).getRoomId();
+        int totalHarga = 0;
+        String selectedHour = "";
+        String selectedJadwal = "";
+
+        for (int i = 0; i < checkedScheduleList.size(); i++) {
+            Schedule singleSchedule = checkedScheduleList.get(i);
+            if (singleSchedule.isSelected()) {
+                selectedJadwal += singleSchedule.getJadwalId();
+                selectedHour += i+1 + ". " + singleSchedule.getJadwalStart() + " - " + singleSchedule.getJadwalEnd();
+                if(i != checkedScheduleList.size()-1) {
+                    selectedJadwal += ",";
+                    selectedHour += "\n";
+                }
+                String selectedHarga = singleSchedule.getHarga();
+                totalHarga = totalHarga + Integer.parseInt(selectedHarga.trim());
+            }
+        }
+
+        Intent intentToBookingReview = new Intent(ManageBookingActivity.this, BookingReviewActivity.class);
+        intentToBookingReview.putExtra("studioName", namaStudio);
+        intentToBookingReview.putExtra("bandName", namaBand);
+        intentToBookingReview.putExtra("jadwal_id", selectedJadwal);
+        intentToBookingReview.putExtra("selected_date", selectedDate);
+        intentToBookingReview.putExtra("selected_hour", selectedHour);
+        intentToBookingReview.putExtra("selected_room", selectedRoom);
+        intentToBookingReview.putExtra("tagihan", totalHarga);
+        startActivity(intentToBookingReview);
+    }
 
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar);

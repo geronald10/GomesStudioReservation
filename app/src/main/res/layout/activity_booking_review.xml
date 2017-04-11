@@ -66,48 +66,48 @@
         android:id="@+id/tv_date_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/date_label"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="@+id/tv_room_label"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_room" />
 
     <TextView
         android:id="@+id/tv_hour_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/hour_label"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="@+id/tv_date_label"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
     <TextView
         android:id="@+id/tv_room_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/room_label"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:textSize="20sp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_studio_name"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_studio_name_label" />
+        app:layout_constraintLeft_toLeftOf="@+id/tv_studio_name_label"
+        app:layout_constraintTop_toBottomOf="@+id/tv_studio_name" />
 
     <TextView
         android:id="@+id/tv_total_payment_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/total_payment_label"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="@+id/tv_hour_label"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/tv_hour" />
 
     <Button
@@ -123,26 +123,42 @@
         android:text="@string/continue_to_payment_button_label"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_total_payment_label"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_total_payment_label" />
+
+    <Button
+        android:id="@+id/btn_cancel_booking"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorStatusFailed"
+        android:text="@string/btn_cancel_booking_label"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/btn_continue_to_payment"
+        app:layout_constraintRight_toRightOf="@+id/btn_continue_to_payment"
+        app:layout_constraintTop_toBottomOf="@+id/btn_continue_to_payment" />
 
     <TextView
         android:id="@+id/tv_band_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="56dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="56dp"
         android:text="Mocca Band"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="@+id/tv_band_name_label"
-        android:layout_marginStart="56dp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toRightOf="@+id/tv_band_name_label"
-        android:layout_marginLeft="56dp"
-        android:layout_marginEnd="24dp"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="24dp"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/tv_band_name_label" />
 
     <TextView
         android:id="@+id/tv_studio_name"
@@ -195,10 +211,10 @@
         android:text="Studio 1"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textSize="20sp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/tv_hour"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_room_label"
-        app:layout_constraintHorizontal_bias="0.0" />
+        app:layout_constraintTop_toTopOf="@+id/tv_room_label" />
 
     <TextView
         android:id="@+id/tv_total_payment"
